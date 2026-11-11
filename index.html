@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>safi — presskit</title>
+<meta name="description" content="safi — DJ residente en artica y crystal rave. Bookings: hola@safi.ar">
+<style>
+  /* --u es la unidad de toda la página: 1/100 del ancho de la maqueta */
+  /* se calcula con el ancho Y el alto de la ventana, así todo entra sin scroll */
+  :root { --u: min(1vw, 100vh / 60); --gris: #808080; }
+  @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 60); } }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    color: #000;
+    font-family: "Microsoft Sans Serif", Arial, Helvetica, sans-serif;
+    font-size: max(1.25 * var(--u), 9px);
+    line-height: 1.25;
+  }
+
+  a { color: inherit; }
+
+  .pagina {
+    width: calc(100 * var(--u));
+    margin: 0 auto;
+    padding: calc(4 * var(--u)) calc(6 * var(--u));
+  }
+
+  /* ---------- cabecera: logo + franja que sale de la "i" ---------- */
+  .cabecera {
+    --alto: calc(9.5 * var(--u));
+    display: flex;
+    align-items: flex-end;
+    height: var(--alto);
+    margin-bottom: calc(3 * var(--u));
+  }
+  .logo {
+    flex: none;
+    height: 100%;
+    width: auto;
+    overflow: visible;
+    display: block;
+  }
+  .lado {
+    flex: 1;
+    height: 100%;
+    margin-left: -1px;              /* se pega al palo de la "i" */
+    display: grid;
+    grid-template-rows: 25.9% 74.1%; /* punto de la "i" / palo de la "i" */
+    min-width: 0;
+  }
+  .nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: calc(4 * var(--u));
+    padding-bottom: calc(0.5 * var(--u));
+    color: var(--gris);
+  }
+  .nav a:hover { color: #000; }
+  .franja {
+    background: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    text-align: right;
+    padding: 0 calc(2 * var(--u));
+    white-space: nowrap;
+  }
+  .franja .booking { font-size: calc(1.9 * var(--u)); }
+
+  /* ---------- cuerpo ---------- */
+  .cuerpo {
+    display: grid;
+    grid-template-columns: 61fr 35fr;
+    column-gap: calc(3.5 * var(--u));
+  }
+  .tabs {
+    grid-column: 1;
+    display: flex;
+    gap: calc(6 * var(--u));
+    margin-bottom: calc(0.9 * var(--u));
+  }
+  .tabs button {
+    font: inherit;
+    font-size: calc(1.9 * var(--u));
+    text-transform: uppercase;
+    background: none;
+    border: 0;
+    color: var(--gris);
+    cursor: pointer;
+  }
+  .tabs button:hover { text-decoration: underline; }
+  .tabs button[aria-selected="true"] { color: #000; }
+
+  .video {
+    grid-column: 1;
+    background: #000;
+    aspect-ratio: 16 / 9;
+  }
+  .video iframe { display: block; width: 100%; height: 100%; border: 0; }
+
+  .tags {
+    grid-column: 1;
+    margin-top: calc(0.7 * var(--u));
+  }
+
+  .ficha {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .ficha img {
+    display: block;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    object-fit: cover;
+    object-position: 80% center;
+  }
+  .fechas {
+    background: #000;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    gap: calc(1.5 * var(--u));
+    padding: calc(1.8 * var(--u)) calc(1.4 * var(--u));
+    font-size: max(1.05 * var(--u), 8px);
+    text-align: right;
+    white-space: nowrap;
+  }
+  .fechas ul { list-style: none; }
+  .fechas .pasadas { text-decoration: line-through; }
+  .fechas .proximas li + li { margin-top: 1.25em; }
+  .fechas a { display: block; }
+
+  /* ---------- versión celular ---------- */
+  @media (max-aspect-ratio: 1/1) {
+    :root { --u: min(1vw, 100vh / 162); }
+    @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 162); } }
+    body { font-size: calc(3.6 * var(--u)); }
+    .pagina { padding: calc(6 * var(--u)) calc(4 * var(--u)); }
+
+    .cabecera { --alto: calc(16 * var(--u)); margin-bottom: calc(9 * var(--u)); }
+    .lado { margin-right: calc(-4 * var(--u)); }   /* la franja llega al borde */
+    .nav {
+      justify-content: space-between;
+      gap: 0;
+      padding: 0 calc(4 * var(--u)) calc(0.6 * var(--u)) calc(5 * var(--u));
+      font-size: calc(3.1 * var(--u));
+      color: #000;
+    }
+    .franja { padding: 0 calc(4 * var(--u)) 0 0; font-size: calc(2.7 * var(--u)); }
+    .franja .booking { font-size: calc(4 * var(--u)); }
+
+    .cuerpo { display: block; }
+    .tabs { justify-content: space-between; gap: 0; margin-bottom: calc(1.5 * var(--u)); }
+    .tabs button { font-size: calc(4 * var(--u)); }
+    .tags { margin-top: calc(1.5 * var(--u)); }
+
+    .ficha { flex-direction: row; margin-top: calc(9 * var(--u)); }
+    .ficha img { flex: none; width: 58%; aspect-ratio: 3 / 2; }
+    .fechas {
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.25em;
+      padding: calc(3 * var(--u));
+      font-size: calc(2.7 * var(--u));
+    }
+  }
+</style>
+</head>
+<body>
+<div class="pagina">
+
+  <header class="cabecera">
+    <svg class="logo" viewBox="0 0 439.96 183.44" role="img" aria-label="safi" fill="#000">
+      <path transform="translate(-7.80 183.44)" d="M 7.81 -44.16 L 34.84 -44.16 C 36.01 -35.47 40.02 -28.77 46.88 -24.05 C 53.74 -19.34 63 -16.98 74.66 -16.98 C 88.05 -16.98 98.47 -18.8 105.91 -22.44 C 113.35 -26.08 117.08 -31.13 117.08 -37.58 C 117.08 -42.3 115.34 -45.88 111.86 -48.31 C 108.39 -50.75 101.9 -52.75 92.39 -54.33 L 62.02 -59.66 C 43.33 -62.8 30.7 -67.1 24.13 -72.55 C 17.55 -78 14.27 -86.15 14.27 -96.98 C 14.27 -111.2 19.45 -122.03 29.83 -129.47 C 40.2 -136.92 55.35 -140.64 75.28 -140.64 C 94.22 -140.64 109.16 -136.69 120.11 -128.8 C 131.07 -120.9 136.92 -109.8 137.67 -95.5 L 113.48 -95.5 C 112.9 -103.35 109.35 -109.38 102.81 -113.59 C 96.28 -117.81 87.14 -119.92 75.41 -119.92 C 63.74 -119.92 54.85 -118.13 48.73 -114.53 C 42.62 -110.94 39.56 -105.75 39.56 -98.97 C 39.56 -94.34 41.17 -90.84 44.39 -88.48 C 47.62 -86.13 54.57 -83.92 65.23 -81.86 L 94 -76.52 C 111.69 -73.3 124.19 -68.98 131.52 -63.56 C 138.84 -58.15 142.5 -50.65 142.5 -41.06 C 142.5 -26.26 136.71 -14.91 125.13 -7.02 C 113.56 0.88 96.86 4.83 75.03 4.83 C 54.03 4.83 37.82 0.69 26.41 -7.58 C 15 -15.84 8.8 -28.04 7.81 -44.16 Z"/>
+      <path transform="translate(142.32 183.44)" d="M 122.41 -21.08 C 116.29 -13.14 108.35 -7.08 98.59 -2.91 C 88.84 1.26 77.72 3.34 65.23 3.34 C 48.54 3.34 35.6 -0.25 26.42 -7.44 C 17.24 -14.63 12.66 -24.68 12.66 -37.58 C 12.66 -44.61 14.29 -50.87 17.55 -56.36 C 20.82 -61.86 25.72 -66.59 32.25 -70.56 C 35.47 -72.55 40.11 -74.21 46.19 -75.53 C 52.27 -76.85 62.18 -78.26 75.91 -79.75 C 78.3 -80 81.77 -80.37 86.33 -80.86 C 109.55 -83.1 121.17 -86.57 121.17 -91.28 L 121.17 -98.72 C 121.17 -105.41 117.69 -110.6 110.75 -114.28 C 103.8 -117.96 93.92 -119.8 81.11 -119.8 C 68.3 -119.8 58.5 -117.64 51.72 -113.34 C 44.94 -109.05 41.14 -102.48 40.31 -93.63 L 16.38 -93.63 C 17.29 -108.84 23.3 -120.5 34.42 -128.61 C 45.54 -136.71 61.11 -140.77 81.11 -140.77 C 101.37 -140.77 117.14 -137.17 128.42 -129.98 C 139.71 -122.78 145.36 -112.74 145.36 -99.84 L 145.36 -34.84 C 145.36 -28.56 146.14 -24.22 147.72 -21.83 C 149.29 -19.43 152.1 -18.23 156.16 -18.23 C 157.48 -18.23 158.92 -18.34 160.47 -18.55 C 162.03 -18.76 163.75 -19.07 165.58 -19.48 L 165.58 -1.48 C 162.18 -0.33 158.86 0.52 155.59 1.05 C 152.33 1.59 149.21 1.86 146.23 1.86 C 138.87 1.86 133.27 0.02 129.42 -3.66 C 125.58 -7.34 123.24 -13.14 122.41 -21.08 Z M 121.17 -66.72 C 115.96 -64.82 109.73 -63.32 102.5 -62.2 C 95.27 -61.08 84.74 -59.9 70.94 -58.66 C 58.79 -57.5 50.21 -55.36 45.2 -52.27 C 40.2 -49.17 37.7 -44.52 37.7 -38.33 C 37.7 -31.54 40.41 -26.23 45.83 -22.39 C 51.24 -18.54 58.74 -16.63 68.33 -16.63 C 84.2 -16.63 96.97 -19.87 106.64 -26.36 C 116.33 -32.85 121.17 -41.35 121.17 -51.84 Z"/>
+      <path transform="translate(312.75 183.44)" d="M 28.16 0 L 28.16 -114.59 L 4.34 -114.59 L 4.34 -135.94 L 28.16 -135.94 L 28.16 -150.06 C 28.16 -161.73 30.96 -170.21 36.58 -175.5 C 42.2 -180.79 51.18 -183.44 63.5 -183.44 C 67.88 -183.44 71.91 -183.27 75.59 -182.94 C 79.27 -182.6 82.77 -182.07 86.08 -181.33 L 86.08 -159.25 C 83.18 -159.82 80.37 -160.25 77.64 -160.55 C 74.91 -160.84 72.3 -160.98 69.83 -160.98 C 63.46 -160.98 59.04 -159.82 56.55 -157.5 C 54.07 -155.19 52.83 -150.97 52.83 -144.86 L 52.83 -135.94 L 86.08 -135.94 L 86.08 -114.59 L 52.83 -114.59 L 52.83 0 Z"/>
+      <path transform="translate(395.56 183.44)" d="M 44.41 -153.67 L 19.84 -153.67 L 19.84 -183.44 L 44.41 -183.44 Z M 19.84 0 L 19.84 -135.94 L 44.41 -135.94 L 44.41 0 Z"/>
+    </svg>
+
+    <div class="lado">
+      <nav class="nav">
+        <!-- reemplazar por los links personales -->
+        <a href="https://instagram.com" target="_blank" rel="noopener">instagram</a>
+        <a href="https://soundcloud.com" target="_blank" rel="noopener">soundcloud</a>
+        <a href="#" target="_blank" rel="noopener">rider</a>
+      </nav>
+      <div class="franja">
+        <p>DJ residente en artica y crystal rave</p>
+        <p class="booking"><a href="mailto:hola@safi.ar">bookings: hola@safi.ar</a></p>
+      </div>
+    </div>
+  </header>
+
+  <main class="cuerpo">
+    <!-- para cambiar un set: data-video = ID del video de YouTube, data-tags = etiquetas -->
+    <div class="tabs" role="tablist" aria-label="sets">
+      <button role="tab" aria-selected="true"
+              data-video="sQHq2Ykv404"
+              data-tags="pop, reguetón, electropop, pop nacional, pop internacional">pop</button>
+      <button role="tab" aria-selected="false"
+              data-video="v2Yix5gc89k"
+              data-tags="electropop, hyperpop, dance pop, house, remixes">electrónica pop</button>
+      <button role="tab" aria-selected="false"
+              data-video="p5u6rpDPImM"
+              data-tags="techno, hard techno, house, trance, hardgroove">electrónica</button>
+    </div>
+
+    <div class="video">
+      <iframe id="video" title="set" allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+    </div>
+
+    <p class="tags" id="tags"></p>
+
+    <aside class="ficha">
+      <img src="safi.jpg" alt="safi tocando con su controladora">
+      <div class="fechas">
+        <ul class="pasadas">
+          <li>31/10: 4rtica halloween</li>
+          <li>06/11: gig techno pride</li>
+          <li>07/11: popperazo pride</li>
+        </ul>
+        <ul class="proximas">
+          <li>31/12: 4rtica año nuevo
+            <a href="https://www.tikzet.com/events/4rtica" target="_blank" rel="noopener">tickets</a></li>
+          <li>02/01: TBA</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+</div>
+
+<script>
+  var tabs = document.querySelectorAll('.tabs button');
+  var video = document.getElementById('video');
+  var tags = document.getElementById('tags');
+
+  function elegir(tab) {
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].setAttribute('aria-selected', tabs[i] === tab ? 'true' : 'false');
+    }
+    video.src = 'https://www.youtube.com/embed/' + tab.getAttribute('data-video');
+    tags.textContent = tab.getAttribute('data-tags');
+  }
+
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].onclick = function () { elegir(this); };
+  }
+  elegir(tabs[0]);
+</script>
+</body>
+</html>
