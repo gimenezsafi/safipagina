@@ -203,30 +203,16 @@
   .fechas .dia { color: var(--barra); white-space: nowrap; }
   .fechas .pasada { text-decoration: line-through; }
 
-  /* ---------- vistas: about y rider ocupan el mismo lugar ---------- */
+  /* ---------- vistas: home y presskit ocupan el mismo lugar ---------- */
   .vistas { display: grid; }
   .vistas > * { grid-area: 1 / 1; min-width: 0; }
   .vistas > .oculta { visibility: hidden; }
 
-  .rider { display: flex; flex-direction: column; }
-  .rider h2, .kit h2 {
+  .kit h2 {
     font: inherit;
     text-transform: uppercase;
     margin-bottom: calc(0.9 * var(--u));
   }
-  .rider dl {
-    flex: 1;
-    background: var(--barra);
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-content: center;
-    padding: calc(2.5 * var(--u)) calc(5 * var(--u));
-    font-size: 1.4em;
-  }
-  .rider dt, .rider dd { padding: .8em 0; border-top: var(--linea) solid var(--oscuro); }
-  .rider dt { color: var(--claro); padding-right: calc(4 * var(--u)); }
-  .rider dd { text-align: right; }
-  .rider > p { margin-top: calc(0.5 * var(--u)); }
 
   /* ---------- presskit: revista + galería a la izquierda, texto a la derecha ---------- */
   .kit-cuerpo {
@@ -315,19 +301,48 @@
 
   .kit-texto {
     background: var(--barra);
-    padding: calc(2 * var(--u));
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     height: 0;            /* la altura la marca el recuadro de la revista, no el texto */
     min-height: 100%;
     overflow: hidden;
-    font-size: .76em;
+    font-size: .73em;
     line-height: 1.35;
   }
+  /* subpáginas: barra oscura, la elegida en blanco y las demás más apagadas */
+  .subs {
+    display: flex;
+    gap: calc(2.5 * var(--u));
+    padding: .5em calc(2 * var(--u));
+    background: var(--oscuro);
+  }
+  .subs button, .subs a {
+    font: inherit;
+    color: var(--claro);
+    background: none;
+    border: 0;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .subs button:hover, .subs a:hover { text-decoration: underline; }
+  .subs button[aria-selected="true"] { color: #ffffff; }
+  .paneles {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    padding: calc(1.6 * var(--u)) calc(2 * var(--u));
+  }
+  .panel {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .panel[data-panel="rider"] { justify-content: flex-start; }
+  .panel.oculta { visibility: hidden; }
   .kit-texto dl { display: grid; grid-template-columns: auto 1fr; }
   .kit-texto dt, .kit-texto dd { padding: .45em 0; border-top: var(--linea) solid var(--oscuro); }
-  .kit-texto dt { color: var(--claro); padding-right: calc(1.5 * var(--u)); }
+  .kit-texto dt { color: var(--claro); padding-right: calc(1 * var(--u)); }
   .kit-texto dd { text-align: right; }
   .kit-pie {
     grid-column: 1 / -1;
@@ -358,31 +373,30 @@
     .cabecera { --alto: calc(16 * var(--u)); margin-bottom: calc(5 * var(--u)); }
     /* en celular el menú entra en la franja en dos renglones */
     .nav {
-      flex-wrap: wrap;
-      justify-content: flex-start;
+      display: grid;                      /* cuatro links en dos renglones de a dos */
+      grid-template-columns: auto auto;
+      justify-content: start;
       align-content: center;
-      gap: calc(0.6 * var(--u)) calc(3.5 * var(--u));
+      gap: calc(0.6 * var(--u)) calc(4 * var(--u));
       padding-right: 0;
       font-size: calc(3 * var(--u));
     }
 
     .cuerpo { display: block; }
-    .rider h2, .kit h2 { font-size: calc(3.3 * var(--u)); margin-bottom: calc(1.5 * var(--u)); }
-    .rider dl { padding: calc(4 * var(--u)); font-size: 1em; }
-    .rider > p { margin-top: calc(1.5 * var(--u)); }
+    .kit h2 { font-size: calc(3.3 * var(--u)); margin-bottom: calc(1.5 * var(--u)); }
     .kit-cuerpo { grid-template-columns: 1fr; }
     .visor { aspect-ratio: 2 / 1; }
     .kit-pie { order: 2; margin-top: calc(1.5 * var(--u)); }
     .kit-texto {
       order: 3;
-      display: block;
       height: auto;
       min-height: 0;
       margin-top: calc(4 * var(--u));
-      padding: calc(3 * var(--u)) calc(4 * var(--u));
       font-size: calc(3 * var(--u));
     }
-    .kit-texto dl { margin-top: calc(2.5 * var(--u)); }
+    .subs { gap: calc(5 * var(--u)); padding: .6em calc(4 * var(--u)); }
+    .paneles { padding: calc(3 * var(--u)) calc(4 * var(--u)); }
+    .panel { justify-content: flex-start; gap: calc(2.5 * var(--u)); }
     .tabs { margin-bottom: calc(1.5 * var(--u)); font-size: calc(3.3 * var(--u)); }
     .tags { margin-top: calc(1.5 * var(--u)); }
 
@@ -450,9 +464,8 @@
 
     <div class="lado">
       <nav class="nav">
-        <!-- el menú va dentro de la franja; home, rider y presskit cambian la vista de abajo -->
+        <!-- el menú va dentro de la franja; home y presskit cambian la vista de abajo -->
         <a href="#home" data-ir="about" aria-current="page">home</a>
-        <a href="#rider" data-ir="rider">rider</a>
         <a href="#presskit" data-ir="presskit">presskit</a>
         <a href="https://www.instagram.com/safi.ags/" target="_blank" rel="noopener">instagram</a>
         <a href="https://soundcloud.com/safi_ags" target="_blank" rel="noopener">soundcloud</a>
@@ -498,19 +511,6 @@
     </aside>
   </main>
 
-  <section class="rider oculta" data-vista="rider">
-    <h2>rider técnico</h2>
-    <dl>
-      <dt>decks</dt>
-      <dd>CDJ 2000nxs en adelante</dd>
-      <dt>mixer</dt>
-      <dd>pioneer y xone</dd>
-      <dt>all in one y controladoras</dt>
-      <dd>pioneer</dd>
-    </dl>
-    <p>bookings: <a href="mailto:hola@safi.ar">hola@safi.ar</a></p>
-  </section>
-
   <section class="kit oculta" data-vista="presskit">
     <h2>presskit</h2>
     <div class="kit-cuerpo">
@@ -537,16 +537,41 @@
       </div>
 
       <!-- recuadro derecho: texto -->
+      <!-- recuadro derecho: subpáginas about / rider, y link a drive -->
       <div class="kit-texto">
-        <p>safi es DJ open format, residente en 4rtica y crystalr4ve. Sus sets van de la electrónica al pop: techno, hard techno, house, trance y hardgroove de un lado; pop, reguetón y pop nacional del otro, con la electrónica pop como puente.</p>
-        <dl>
-          <dt>formato</dt>
-          <dd>open format</dd>
-          <dt>residencias</dt>
-          <dd>4rtica · crystalr4ve</dd>
-          <dt>sets</dt>
-          <dd>electrónica · electrónica pop · pop</dd>
-        </dl>
+        <div class="subs" role="tablist" aria-label="presskit">
+          <button role="tab" data-sub="about" aria-selected="true">about</button>
+          <button role="tab" data-sub="rider" aria-selected="false">rider</button>
+          <!-- reemplazar por el link de la carpeta de drive -->
+          <a href="https://drive.google.com" target="_blank" rel="noopener">drive</a>
+        </div>
+        <div class="paneles">
+          <div class="panel" data-panel="about">
+            <p>safi es DJ open format, residente en
+              <a href="https://instagram.com/4rtica" target="_blank" rel="noopener">4rtica</a> y
+              <a href="https://instagram.com/crystalr4ve" target="_blank" rel="noopener">crystalr4ve</a>.
+              Sus sets van de la electrónica al pop: techno, hard techno, house, trance y hardgroove de un lado; pop, reguetón y pop nacional del otro, con la electrónica pop como puente.</p>
+            <dl>
+              <dt>formato</dt>
+              <dd>open format</dd>
+              <dt>residencias</dt>
+              <dd><a href="https://instagram.com/4rtica" target="_blank" rel="noopener">4rtica</a> ·
+                <a href="https://instagram.com/crystalr4ve" target="_blank" rel="noopener">crystalr4ve</a></dd>
+              <dt>sets</dt>
+              <dd>electrónica · electrónica pop · pop</dd>
+            </dl>
+          </div>
+          <div class="panel oculta" data-panel="rider">
+            <dl>
+              <dt>decks</dt>
+              <dd>CDJ 2000nxs en adelante</dd>
+              <dt>mixer</dt>
+              <dd>pioneer y xone</dd>
+              <dt>all in one y controladoras</dt>
+              <dd>pioneer</dd>
+            </dl>
+          </div>
+        </div>
       </div>
 
       <p class="kit-pie">
@@ -650,6 +675,15 @@
   hojas[0].onclick = function () { pasar(estado === 0 ? 1 : 0); };   // tocar la hoja también la da vuelta
   hojas[1].onclick = function () { pasar(estado === 2 ? 1 : 2); };
 
+  /* subpáginas del recuadro derecho: about / rider */
+  var subs = document.querySelectorAll('.subs button');
+  var paneles = document.querySelectorAll('.panel');
+  function sub(nombre) {
+    for (var i = 0; i < subs.length; i++) subs[i].setAttribute('aria-selected', subs[i].getAttribute('data-sub') === nombre ? 'true' : 'false');
+    for (var j = 0; j < paneles.length; j++) paneles[j].classList.toggle('oculta', paneles[j].getAttribute('data-panel') !== nombre);
+  }
+  for (var k = 0; k < subs.length; k++) subs[k].onclick = function () { sub(this.getAttribute('data-sub')); };
+
   var cargado = false;
   function cargarPresskit() {   // las imágenes se bajan recién al abrir la vista
     if (cargado) return;
@@ -665,12 +699,13 @@
     }, 15000);
   }
 
-  /* home / rider / presskit: se muestra una vista u otra según el link del menú (#home, #rider, #presskit) */
+  /* home / presskit: se muestra una vista u otra según el link del menú (#home, #presskit) */
   var vistas = document.querySelectorAll('[data-vista]');
   var links = document.querySelectorAll('[data-ir]');
 
   function mostrar() {
-    var nombre = { '#rider': 'rider', '#presskit': 'presskit' }[location.hash] || 'about';
+    var nombre = { '#rider': 'presskit', '#presskit': 'presskit' }[location.hash] || 'about';
+    if (location.hash === '#rider') sub('rider');   // link directo al rider
     if (nombre === 'presskit') cargarPresskit();
     for (var i = 0; i < vistas.length; i++) {
       vistas[i].classList.toggle('oculta', vistas[i].getAttribute('data-vista') !== nombre);
