@@ -179,8 +179,8 @@
 
   /* ---------- versión celular ---------- */
   @media (max-aspect-ratio: 1/1) {
-    :root { --u: min(1vw, 100vh / 168); }
-    @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 168); } }
+    :root { --u: min(1vw, 100vh / 150); }
+    @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 150); } }
 
     body { font-size: calc(3.5 * var(--u)); }
     .pagina { padding: calc(6 * var(--u)) calc(4 * var(--u)); }
@@ -206,23 +206,23 @@
     .tabs { justify-content: space-between; gap: 0; margin-bottom: calc(1.5 * var(--u)); font-size: calc(3.3 * var(--u)); }
     .tags { margin-top: calc(1.5 * var(--u)); min-height: 2.5em; }
 
-    .ficha { margin-top: calc(4 * var(--u)); height: calc(46 * var(--u)); }
+    .ficha { margin-top: calc(4 * var(--u)); }
     .ficha img { object-position: center 15%; }
-    /* fechas de a dos por renglón, ocupando todo el ancho y el alto de la foto */
+    /* fechas de a dos por renglón, en un recuadro bajo que ocupa todo el ancho */
     .fechas {
       width: 100%;
       height: 100%;
-      padding: calc(4 * var(--u));
+      padding: calc(3.5 * var(--u)) calc(4 * var(--u));
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      gap: calc(1.5 * var(--u));
     }
     .fechas ul {
       margin: 0;
       display: grid;
       grid-template-columns: auto auto;
       justify-content: space-between;
-      row-gap: calc(10.8 * var(--u));   /* los tres renglones quedan repartidos parejo */
+      row-gap: calc(1.5 * var(--u));
     }
     .fechas li:nth-child(even) { text-align: right; }
   }
