@@ -148,6 +148,7 @@
   .tags {
     grid-column: 1;
     margin-top: calc(0.5 * var(--u));
+    min-height: 1.25em;   /* reserva el renglón aunque todavía no haya set elegido */
   }
 
   /* foto espejada, en gris y semitransparente sobre el fondo: se tiñe con la paleta */
@@ -209,7 +210,7 @@
   .vistas > .oculta { visibility: hidden; }
 
   .rider { display: flex; flex-direction: column; }
-  .rider h2 {
+  .rider h2, .kit h2 {
     font: inherit;
     text-transform: uppercase;
     margin-bottom: calc(0.9 * var(--u));
@@ -228,30 +229,129 @@
   .rider dd { text-align: right; }
   .rider > p { margin-top: calc(0.5 * var(--u)); }
 
-  /* presskit: bio a la izquierda (ancho del video) y datos a la derecha (ancho de la foto) */
+  /* ---------- presskit: revista + galería a la izquierda, texto a la derecha ---------- */
   .kit-cuerpo {
-    flex: 1;
-    min-height: 0;
     display: grid;
     grid-template-columns: 539fr 310fr;
     column-gap: calc(3.1 * var(--u));
   }
-  .kit .bio {
-    background: var(--barra);
-    display: flex;
-    align-items: center;
-    padding: calc(3 * var(--u)) calc(4 * var(--u));
-    font-size: 1.25em;
-    line-height: 1.4;
+  .visor {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
   }
-  .kit dl { background: none; padding: 0; font-size: 1em; }
-  .kit dt, .kit dd { padding: .5em 0; }
-  .kit dt { padding-right: calc(2 * var(--u)); }
+  /* galería: las fotos se funden una con otra muy despacio (10 segundos) */
+  .galeria img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.1) brightness(.8);
+    opacity: 0;
+    transition: opacity 10s linear;
+  }
+  .galeria img.ver { opacity: .6; }
+  .galeria::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--claro);
+    background: color-mix(in srgb, var(--fondo), var(--oscuro) 58%);
+    opacity: .62;
+  }
+  /* revista: dos hojas que giran sobre el lomo */
+  .libro {
+    --giro: 1.1s;
+    position: absolute;
+    top: 7%;
+    bottom: 7%;
+    left: 50%;
+    aspect-ratio: 420 / 297;
+    perspective: calc(160 * var(--u));
+    transform: translateX(-50%);
+    transition: transform var(--giro) ease-in-out;
+  }
+  .libro[data-estado="0"] { transform: translateX(-75%); }   /* cerrada: la tapa queda centrada */
+  .libro[data-estado="2"] { transform: translateX(-25%); }   /* cerrada del revés: contratapa centrada */
+  .hoja {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform var(--giro) ease-in-out;
+    cursor: pointer;
+  }
+  .hoja.vuelta { transform: rotateY(-180deg); }
+  .cara {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--barra);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .cara.dorso { transform: rotateY(180deg); }
+  .pasar {
+    position: absolute;
+    top: 50%;
+    width: 1.7em;
+    height: 1.7em;
+    margin-top: -.85em;
+    font: inherit;
+    line-height: 1;
+    color: var(--oscuro);
+    background: var(--barra);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .pasar.ant { left: calc(1.2 * var(--u)); }
+  .pasar.sig { right: calc(1.2 * var(--u)); }
+  .pasar:disabled { opacity: .35; cursor: default; }
+
+  .kit-texto {
+    background: var(--barra);
+    padding: calc(2 * var(--u));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 0;            /* la altura la marca el recuadro de la revista, no el texto */
+    min-height: 100%;
+    overflow: hidden;
+    font-size: .76em;
+    line-height: 1.35;
+  }
+  .kit-texto dl { display: grid; grid-template-columns: auto 1fr; }
+  .kit-texto dt, .kit-texto dd { padding: .45em 0; border-top: var(--linea) solid var(--oscuro); }
+  .kit-texto dt { color: var(--claro); padding-right: calc(1.5 * var(--u)); }
+  .kit-texto dd { text-align: right; }
+  .kit-pie {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    margin-top: calc(0.5 * var(--u));
+  }
+  .boton {
+    padding: 0 .6em;
+    background: var(--oscuro);
+    color: var(--barra);
+    text-decoration: none;
+  }
+  .boton:hover { text-decoration: underline; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .galeria img, .libro, .hoja { transition-duration: .01s; }
+  }
 
   /* ---------- versión celular ---------- */
   @media (max-aspect-ratio: 1/1) {
-    :root { --u: min(1vw, 100vh / 146); }
-    @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 146); } }
+    :root { --u: min(1vw, 100vh / 160); }
+    @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 160); } }
 
     body { font-size: calc(3.5 * var(--u)); }
     .pagina { padding: calc(6 * var(--u)) calc(4 * var(--u)); }
@@ -273,13 +373,22 @@
     }
 
     .cuerpo { display: block; }
-    .rider h2 { font-size: calc(3.3 * var(--u)); margin-bottom: calc(1.5 * var(--u)); }
+    .rider h2, .kit h2 { font-size: calc(3.3 * var(--u)); margin-bottom: calc(1.5 * var(--u)); }
     .rider dl { padding: calc(4 * var(--u)); font-size: 1em; }
     .rider > p { margin-top: calc(1.5 * var(--u)); }
-    .kit-cuerpo { display: block; }
-    .kit .bio { padding: calc(4 * var(--u)); font-size: 1em; margin-bottom: calc(2 * var(--u)); }
-    .kit dl { padding: 0; }
-    .kit dt, .kit dd { padding: .65em 0; }
+    .kit-cuerpo { grid-template-columns: 1fr; }
+    .visor { aspect-ratio: 2 / 1; }
+    .kit-pie { order: 2; margin-top: calc(1.5 * var(--u)); }
+    .kit-texto {
+      order: 3;
+      display: block;
+      height: auto;
+      min-height: 0;
+      margin-top: calc(4 * var(--u));
+      padding: calc(3 * var(--u)) calc(4 * var(--u));
+      font-size: calc(3 * var(--u));
+    }
+    .kit-texto dl { margin-top: calc(2.5 * var(--u)); }
     .tabs { margin-bottom: calc(1.5 * var(--u)); font-size: calc(3.3 * var(--u)); }
     .tags { margin-top: calc(1.5 * var(--u)); }
 
@@ -343,8 +452,8 @@
 
     <div class="lado">
       <nav class="nav">
-        <!-- about, rider y presskit cambian la vista de abajo -->
-        <a href="#about" data-ir="about" aria-current="page">about</a>
+        <!-- home, rider y presskit cambian la vista de abajo -->
+        <a href="#home" data-ir="about" aria-current="page">home</a>
         <a href="#rider" data-ir="rider">rider</a>
         <a href="#presskit" data-ir="presskit">presskit</a>
         <a href="https://www.instagram.com/safi.ags/" target="_blank" rel="noopener">instagram</a>
@@ -404,24 +513,49 @@
     <p>bookings: <a href="mailto:hola@safi.ar">hola@safi.ar</a></p>
   </section>
 
-  <section class="rider kit oculta" data-vista="presskit">
+  <section class="kit oculta" data-vista="presskit">
     <h2>presskit</h2>
     <div class="kit-cuerpo">
-      <p class="bio">safi es DJ open format, residente en 4rtica y crystalr4ve. Sus sets van de la electrónica al pop: techno, hard techno, house, trance y hardgroove de un lado; pop, reguetón y pop nacional del otro, con la electrónica pop como puente.</p>
-      <dl>
-        <dt>formato</dt>
-        <dd>open format</dd>
-        <dt>residencias</dt>
-        <dd>4rtica · crystalr4ve</dd>
-        <dt>sets</dt>
-        <dd>electrónica · electrónica pop · pop</dd>
-        <dt>instagram</dt>
-        <dd><a href="https://www.instagram.com/safi.ags/" target="_blank" rel="noopener">@safi.ags</a></dd>
-        <dt>soundcloud</dt>
-        <dd><a href="https://soundcloud.com/safi_ags" target="_blank" rel="noopener">safi_ags</a></dd>
-      </dl>
+
+      <!-- recuadro izquierdo: galería de fotos de fondo + revista para hojear -->
+      <div class="visor">
+        <div class="galeria">
+          <!-- para sumar fotos a la galería, agregar más líneas como estas -->
+          <img data-src="foto-1.jpg" alt="">
+          <img data-src="foto-2.jpg" alt="">
+        </div>
+        <div class="libro" data-estado="0">
+          <div class="hoja">
+            <img class="cara" data-src="presskit-1.jpg" alt="presskit, tapa">
+            <img class="cara dorso" data-src="presskit-2.jpg" alt="presskit, página 2">
+          </div>
+          <div class="hoja">
+            <img class="cara" data-src="presskit-3.jpg" alt="presskit, página 3">
+            <img class="cara dorso" data-src="presskit-4.jpg" alt="presskit, contratapa">
+          </div>
+        </div>
+        <button class="pasar ant" aria-label="página anterior" disabled>&larr;</button>
+        <button class="pasar sig" aria-label="página siguiente">&rarr;</button>
+      </div>
+
+      <!-- recuadro derecho: texto -->
+      <div class="kit-texto">
+        <p>safi es DJ open format, residente en 4rtica y crystalr4ve. Sus sets van de la electrónica al pop: techno, hard techno, house, trance y hardgroove de un lado; pop, reguetón y pop nacional del otro, con la electrónica pop como puente.</p>
+        <dl>
+          <dt>formato</dt>
+          <dd>open format</dd>
+          <dt>residencias</dt>
+          <dd>4rtica · crystalr4ve</dd>
+          <dt>sets</dt>
+          <dd>electrónica · electrónica pop · pop</dd>
+        </dl>
+      </div>
+
+      <p class="kit-pie">
+        <a class="boton" href="safi-presskit.pdf" download>descargar presskit</a>
+        <span>bookings: <a href="mailto:hola@safi.ar">hola@safi.ar</a></span>
+      </p>
     </div>
-    <p>bookings: <a href="mailto:hola@safi.ar">hola@safi.ar</a></p>
   </section>
   </div>
 
@@ -495,12 +629,51 @@
 
   actual = tabs[Math.floor(Math.random() * tabs.length)];   // un set al azar cada vez que entrás
 
-  /* about / rider / presskit: se muestra una vista u otra según el link del menú (#about, #rider, #presskit) */
+  /* ---- presskit: revista para hojear + galería de fondo ---- */
+  var libro = document.querySelector('.libro');
+  var hojas = document.querySelectorAll('.hoja');
+  var ant = document.querySelector('.pasar.ant'), sig = document.querySelector('.pasar.sig');
+  var estado = 0;   // 0 = tapa, 1 = doble página interior, 2 = contratapa
+
+  function pasar(n) {
+    if (n < 0 || n > 2 || n === estado) return;
+    hojas[0].classList.toggle('vuelta', n >= 1);
+    hojas[1].classList.toggle('vuelta', n >= 2);
+    if (n === 0) { hojas[0].style.zIndex = 2; hojas[1].style.zIndex = 1; }
+    if (n === 2) { hojas[0].style.zIndex = 1; hojas[1].style.zIndex = 2; }
+    libro.setAttribute('data-estado', n);
+    estado = n;
+    ant.disabled = n === 0;
+    sig.disabled = n === 2;
+  }
+  hojas[0].style.zIndex = 2; hojas[1].style.zIndex = 1;
+  ant.onclick = function () { pasar(estado - 1); };
+  sig.onclick = function () { pasar(estado + 1); };
+  hojas[0].onclick = function () { pasar(estado === 0 ? 1 : 0); };   // tocar la hoja también la da vuelta
+  hojas[1].onclick = function () { pasar(estado === 2 ? 1 : 2); };
+
+  var cargado = false;
+  function cargarPresskit() {   // las imágenes se bajan recién al abrir la vista
+    if (cargado) return;
+    cargado = true;
+    var imgs = document.querySelectorAll('.kit img[data-src]');
+    for (var i = 0; i < imgs.length; i++) imgs[i].src = imgs[i].getAttribute('data-src');
+    var fotos = document.querySelectorAll('.galeria img'), f = 0;
+    fotos[0].classList.add('ver');
+    setInterval(function () {   // cada 15 s arranca un fundido de 10 s hacia la foto siguiente
+      fotos[f].classList.remove('ver');
+      f = (f + 1) % fotos.length;
+      fotos[f].classList.add('ver');
+    }, 15000);
+  }
+
+  /* home / rider / presskit: se muestra una vista u otra según el link del menú (#home, #rider, #presskit) */
   var vistas = document.querySelectorAll('[data-vista]');
   var links = document.querySelectorAll('[data-ir]');
 
   function mostrar() {
     var nombre = { '#rider': 'rider', '#presskit': 'presskit' }[location.hash] || 'about';
+    if (nombre === 'presskit') cargarPresskit();
     for (var i = 0; i < vistas.length; i++) {
       vistas[i].classList.toggle('oculta', vistas[i].getAttribute('data-vista') !== nombre);
     }
