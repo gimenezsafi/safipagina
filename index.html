@@ -214,6 +214,32 @@
     margin-bottom: calc(0.9 * var(--u));
   }
 
+  /* ---------- cabinas: video a la izquierda, ficha clara con líneas a la derecha ---------- */
+  .cab {
+    display: grid;
+    grid-template-columns: 539fr 310fr;
+    column-gap: calc(3.1 * var(--u));
+  }
+  .cab-tabs { justify-content: flex-start; gap: calc(4 * var(--u)); }
+  .cab-caja {
+    grid-column: 2;
+    grid-row: 2;
+    display: grid;
+    height: 0;
+    min-height: 100%;
+    overflow: hidden;
+    background: var(--barra);
+    padding: calc(2 * var(--u));
+  }
+  .cab-ficha { grid-area: 1 / 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .cab-ficha.oculta { visibility: hidden; }
+  .cab-t { text-transform: uppercase; }
+  .cab-ficha dl { display: grid; grid-template-columns: auto 1fr; }
+  .cab-ficha dt, .cab-ficha dd { padding: .4em 0; border-top: var(--linea) solid var(--oscuro); }
+  .cab-ficha dt { color: var(--claro); padding-right: calc(1.5 * var(--u)); }
+  .cab-ficha dd { text-align: right; }
+  .cab-pie { grid-column: 1 / -1; text-align: right; margin-top: calc(0.5 * var(--u)); }
+
   /* ---------- presskit: revista + galería a la izquierda, texto a la derecha ---------- */
   .kit-cuerpo {
     display: grid;
@@ -306,18 +332,19 @@
     height: 0;            /* la altura la marca el recuadro de la revista, no el texto */
     min-height: 100%;
     overflow: hidden;
-    font-size: .73em;
+    font-size: .76em;
     line-height: 1.35;
   }
-  /* subpáginas: barra oscura, la elegida en blanco y las demás más apagadas */
+  /* subpáginas: sueltas arriba del recuadro, como los sets del home (elegida oscura, las demás claras) */
   .subs {
     display: flex;
-    gap: calc(2.5 * var(--u));
-    padding: .5em calc(2 * var(--u));
-    background: var(--oscuro);
+    gap: calc(3.1 * var(--u));
+    margin-bottom: calc(0.9 * var(--u));
+    text-transform: uppercase;
   }
   .subs button, .subs a {
     font: inherit;
+    text-transform: inherit;
     color: var(--claro);
     background: none;
     border: 0;
@@ -325,12 +352,12 @@
     cursor: pointer;
   }
   .subs button:hover, .subs a:hover { text-decoration: underline; }
-  .subs button[aria-selected="true"] { color: #ffffff; }
+  .subs button[aria-selected="true"] { color: var(--oscuro); }
   .paneles {
     flex: 1;
     min-height: 0;
     display: grid;
-    padding: calc(1.6 * var(--u)) calc(2 * var(--u));
+    padding: calc(2 * var(--u));
   }
   .panel {
     grid-area: 1 / 1;
@@ -373,28 +400,31 @@
     .cabecera { --alto: calc(16 * var(--u)); margin-bottom: calc(5 * var(--u)); }
     /* en celular el menú entra en la franja en dos renglones */
     .nav {
-      display: grid;                      /* cuatro links en dos renglones de a dos */
-      grid-template-columns: auto auto;
-      justify-content: start;
+      flex-wrap: wrap;                    /* cinco links en dos renglones */
+      justify-content: flex-start;
       align-content: center;
-      gap: calc(0.6 * var(--u)) calc(4 * var(--u));
+      gap: calc(0.6 * var(--u)) calc(3.5 * var(--u));
       padding-right: 0;
       font-size: calc(3 * var(--u));
     }
 
     .cuerpo { display: block; }
     .kit h2 { font-size: calc(3.3 * var(--u)); margin-bottom: calc(1.5 * var(--u)); }
+    .cab { display: block; }
+    .cab-tabs { justify-content: space-between; gap: 0; }
+    .cab-caja { height: auto; min-height: 0; margin-top: calc(5 * var(--u)); padding: calc(3 * var(--u)) calc(4 * var(--u)); }
+    .cab-ficha { gap: calc(2.5 * var(--u)); }
+    .cab-pie { margin-top: calc(1.5 * var(--u)); }
     .kit-cuerpo { grid-template-columns: 1fr; }
     .visor { aspect-ratio: 2 / 1; }
     .kit-pie { order: 2; margin-top: calc(1.5 * var(--u)); }
     .kit-texto {
-      order: 3;
+      order: 4;
       height: auto;
       min-height: 0;
-      margin-top: calc(4 * var(--u));
       font-size: calc(3 * var(--u));
     }
-    .subs { gap: calc(5 * var(--u)); padding: .6em calc(4 * var(--u)); }
+    .subs { order: 3; gap: calc(6 * var(--u)); margin: calc(5 * var(--u)) 0 calc(1.5 * var(--u)); font-size: calc(3.3 * var(--u)); }
     .paneles { padding: calc(3 * var(--u)) calc(4 * var(--u)); }
     .panel { justify-content: flex-start; gap: calc(2.5 * var(--u)); }
     .tabs { margin-bottom: calc(1.5 * var(--u)); font-size: calc(3.3 * var(--u)); }
@@ -464,8 +494,9 @@
 
     <div class="lado">
       <nav class="nav">
-        <!-- el menú va dentro de la franja; home y presskit cambian la vista de abajo -->
+        <!-- el menú va dentro de la franja; home, cabinas y presskit cambian la vista de abajo -->
         <a href="#home" data-ir="about" aria-current="page">home</a>
+        <a href="#cabinas" data-ir="cabinas">cabinas</a>
         <a href="#presskit" data-ir="presskit">presskit</a>
         <a href="https://www.instagram.com/safi.ags/" target="_blank" rel="noopener">instagram</a>
         <a href="https://soundcloud.com/safi_ags" target="_blank" rel="noopener">soundcloud</a>
@@ -511,9 +542,54 @@
     </aside>
   </main>
 
+  <section class="cab oculta" data-vista="cabinas">
+    <!-- cada cabina: data-video = ID de YouTube, data-inicio = segundo en el que arranca -->
+    <div class="tabs cab-tabs" role="tablist" aria-label="cabinas">
+      <button role="tab" aria-selected="true" data-cab="0" data-video="-9DagC7FU0c" data-inicio="2521"><span class="txt">cabina archivo secreto</span></button>
+      <button role="tab" aria-selected="false" data-cab="1" data-video="ZQkhUxQ2IUo" data-inicio="2329"><span class="txt">cabina tekgen</span></button>
+    </div>
+    <div class="video">
+      <iframe id="video-cab" title="cabina" allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+    </div>
+    <div class="cab-caja">
+      <div class="cab-ficha" data-cab="0">
+        <p class="cab-t">cabina archivo secreto</p>
+        <dl>
+          <dt>grabado</dt>
+          <dd>en septiembre de 2025</dd>
+          <dt>géneros</dt>
+          <dd>techno, hard techno, hardgroove</dd>
+          <dt>video</dt>
+          <dd><a href="https://www.youtube.com/watch?v=-9DagC7FU0c&t=2521s" target="_blank" rel="noopener">ver en youtube</a></dd>
+        </dl>
+      </div>
+      <div class="cab-ficha oculta" data-cab="1">
+        <p class="cab-t">cabina tekgen</p>
+        <dl>
+          <dt>grabado</dt>
+          <dd>en agosto de 2025</dd>
+          <dt>géneros</dt>
+          <dd>trance, techno, acid, EBM</dd>
+          <dt>video</dt>
+          <dd><a href="https://www.youtube.com/watch?v=ZQkhUxQ2IUo&t=2329s" target="_blank" rel="noopener">ver en youtube</a></dd>
+        </dl>
+      </div>
+    </div>
+    <p class="cab-pie">bookings: <a href="mailto:hola@safi.ar">hola@safi.ar</a></p>
+  </section>
+
   <section class="kit oculta" data-vista="presskit">
-    <h2>presskit</h2>
     <div class="kit-cuerpo">
+      <h2>presskit</h2>
+      <!-- subpáginas del recuadro derecho: van sueltas, arriba del recuadro -->
+      <div class="subs" role="tablist" aria-label="presskit">
+        <button role="tab" data-sub="about" aria-selected="true">about</button>
+        <button role="tab" data-sub="rider" aria-selected="false">rider</button>
+        <!-- reemplazar por el link de la carpeta de drive -->
+        <a href="https://drive.google.com" target="_blank" rel="noopener">drive</a>
+      </div>
 
       <!-- recuadro izquierdo: galería de fotos de fondo + revista para hojear -->
       <div class="visor">
@@ -537,14 +613,8 @@
       </div>
 
       <!-- recuadro derecho: texto -->
-      <!-- recuadro derecho: subpáginas about / rider, y link a drive -->
+      <!-- recuadro derecho: about / rider -->
       <div class="kit-texto">
-        <div class="subs" role="tablist" aria-label="presskit">
-          <button role="tab" data-sub="about" aria-selected="true">about</button>
-          <button role="tab" data-sub="rider" aria-selected="false">rider</button>
-          <!-- reemplazar por el link de la carpeta de drive -->
-          <a href="https://drive.google.com" target="_blank" rel="noopener">drive</a>
-        </div>
         <div class="paneles">
           <div class="panel" data-panel="about">
             <p>safi es DJ open format, residente en
@@ -585,7 +655,7 @@
 </div>
 
 <script>
-  var tabs = document.querySelectorAll('.tabs button');
+  var tabs = document.querySelectorAll('.cuerpo .tabs button');
   var video = document.getElementById('video');
   var tags = document.getElementById('tags');
 
@@ -675,6 +745,19 @@
   hojas[0].onclick = function () { pasar(estado === 0 ? 1 : 0); };   // tocar la hoja también la da vuelta
   hojas[1].onclick = function () { pasar(estado === 2 ? 1 : 2); };
 
+  /* ---- cabinas ---- */
+  var cabTabs = document.querySelectorAll('.cab-tabs button');
+  var cabFichas = document.querySelectorAll('.cab-ficha');
+  var videoCab = document.getElementById('video-cab');
+  var cabActual = cabTabs[0];
+  function cabina(tab) {
+    cabActual = tab;
+    for (var i = 0; i < cabTabs.length; i++) cabTabs[i].setAttribute('aria-selected', cabTabs[i] === tab ? 'true' : 'false');
+    for (var j = 0; j < cabFichas.length; j++) cabFichas[j].classList.toggle('oculta', cabFichas[j].getAttribute('data-cab') !== tab.getAttribute('data-cab'));
+    videoCab.src = 'https://www.youtube.com/embed/' + tab.getAttribute('data-video') + '?start=' + tab.getAttribute('data-inicio');
+  }
+  for (var c = 0; c < cabTabs.length; c++) cabTabs[c].onclick = function () { cabina(this); };
+
   /* subpáginas del recuadro derecho: about / rider */
   var subs = document.querySelectorAll('.subs button');
   var paneles = document.querySelectorAll('.panel');
@@ -699,12 +782,12 @@
     }, 15000);
   }
 
-  /* home / presskit: se muestra una vista u otra según el link del menú (#home, #presskit) */
+  /* home / cabinas / presskit: se muestra una vista u otra según el link del menú */
   var vistas = document.querySelectorAll('[data-vista]');
   var links = document.querySelectorAll('[data-ir]');
 
   function mostrar() {
-    var nombre = { '#rider': 'presskit', '#presskit': 'presskit' }[location.hash] || 'about';
+    var nombre = { '#rider': 'presskit', '#presskit': 'presskit', '#cabinas': 'cabinas' }[location.hash] || 'about';
     if (location.hash === '#rider') sub('rider');   // link directo al rider
     if (nombre === 'presskit') cargarPresskit();
     for (var i = 0; i < vistas.length; i++) {
@@ -714,8 +797,9 @@
       if (links[j].getAttribute('data-ir') === nombre) links[j].setAttribute('aria-current', 'page');
       else links[j].removeAttribute('aria-current');
     }
-    if (nombre === 'about') elegir(actual);
-    else video.src = 'about:blank';   // corta el video al salir de about
+    // solo suena el video de la vista que se está viendo
+    if (nombre === 'about') elegir(actual); else video.src = 'about:blank';
+    if (nombre === 'cabinas') cabina(cabActual); else videoCab.src = 'about:blank';
   }
 
   window.onhashchange = mostrar;
