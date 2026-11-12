@@ -79,25 +79,20 @@
     grid-template-rows: 29.5% 70.5%;          /* punto de la "i" / cuerpo de la "i" */
     min-width: 0;
   }
-  .nav, .franja { padding-left: calc(1.115 * var(--alto)); }
+  /* el menú va dentro de la franja, con el mismo margen interno (2u) que los recuadros de abajo */
   .nav {
+    grid-row: 2;
+    background: var(--barra);
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    padding-bottom: calc(0.7 * var(--u));
+    align-items: center;
+    padding: 0 calc(2 * var(--u)) 0 calc(0.572 * var(--alto) + 2 * var(--u));
     color: var(--claro);
+    white-space: nowrap;
   }
   .nav a { text-decoration: none; }
   .nav a:hover { text-decoration: underline; }
   .nav a[aria-current] { color: var(--oscuro); }
-  .franja {
-    grid-row: 2;
-    background: var(--barra);
-    display: flex;
-    align-items: center;
-    padding-right: calc(2 * var(--u));
-    white-space: nowrap;
-  }
 
   /* ---------- cuerpo ---------- */
   .cuerpo {
@@ -189,7 +184,11 @@
     z-index: 2;
     text-shadow: 0 0 .35em color-mix(in srgb, var(--oscuro) 55%, transparent);   /* refuerza la lectura del blanco */
     width: 100%;
-    padding: 0 calc(2 * var(--u));
+    height: 100%;
+    padding: calc(2 * var(--u));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;   /* lema arriba, fechas abajo, mismo margen en los cuatro lados */
   }
   /* filas con una línea fina arriba: dato a la izquierda, valor a la derecha */
   .fechas ul { list-style: none; }
@@ -197,7 +196,7 @@
     display: flex;
     justify-content: space-between;
     gap: calc(1.5 * var(--u));
-    padding: .5em 0;
+    padding: .4em 0;
     border-top: var(--linea) solid var(--barra);
   }
   .fechas li span:last-child { text-align: right; }
@@ -350,26 +349,21 @@
 
   /* ---------- versión celular ---------- */
   @media (max-aspect-ratio: 1/1) {
-    :root { --u: min(1vw, 100vh / 160); }
-    @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 160); } }
+    :root { --u: min(1vw, 100vh / 156); }
+    @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 156); } }
 
     body { font-size: calc(3.5 * var(--u)); }
     .pagina { padding: calc(6 * var(--u)) calc(4 * var(--u)); }
 
-    /* el menú baja a una fila propia debajo del logo */
-    .cabecera { --alto: calc(16 * var(--u)); margin-bottom: calc(14.4 * var(--u)); }
+    .cabecera { --alto: calc(16 * var(--u)); margin-bottom: calc(5 * var(--u)); }
+    /* en celular el menú entra en la franja en dos renglones */
     .nav {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: calc(100% + 5 * var(--u));
-      padding: 0;
-    }
-    .franja {
-      padding-left: calc(0.72 * var(--alto));
-      padding-right: calc(1 * var(--u));
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-content: center;
+      gap: calc(0.6 * var(--u)) calc(3.5 * var(--u));
+      padding-right: 0;
       font-size: calc(3 * var(--u));
-      white-space: normal;
     }
 
     .cuerpo { display: block; }
@@ -398,9 +392,13 @@
     .fechas {
       width: 100%;
       height: 100%;
-      padding: calc(2 * var(--u)) calc(4 * var(--u));
+      display: block;
+      height: auto;
+      padding: calc(3 * var(--u)) calc(4 * var(--u)) calc(1.5 * var(--u));
     }
+    .fechas .lema { padding-bottom: calc(2.5 * var(--u)); }
     .fechas ul {
+      border-top: var(--linea) solid var(--barra);
       display: grid;
       grid-template-columns: auto auto;
       justify-content: space-between;
@@ -452,16 +450,13 @@
 
     <div class="lado">
       <nav class="nav">
-        <!-- home, rider y presskit cambian la vista de abajo -->
+        <!-- el menú va dentro de la franja; home, rider y presskit cambian la vista de abajo -->
         <a href="#home" data-ir="about" aria-current="page">home</a>
         <a href="#rider" data-ir="rider">rider</a>
         <a href="#presskit" data-ir="presskit">presskit</a>
         <a href="https://www.instagram.com/safi.ags/" target="_blank" rel="noopener">instagram</a>
         <a href="https://soundcloud.com/safi_ags" target="_blank" rel="noopener">soundcloud</a>
       </nav>
-      <p class="franja"><span>DJ open format, residente en
-        <a href="https://instagram.com/4rtica" target="_blank" rel="noopener">@4rtica</a> y
-        <a href="https://instagram.com/crystalr4ve" target="_blank" rel="noopener">@crystalr4ve</a></span></p>
     </div>
   </header>
 
@@ -488,6 +483,9 @@
     <aside class="ficha">
       <img src="safi.jpg" alt="retrato de safi">
       <div class="fechas">
+        <p class="lema">DJ open format, residente en
+          <a href="https://instagram.com/4rtica" target="_blank" rel="noopener">@4rtica</a> y
+          <a href="https://instagram.com/crystalr4ve" target="_blank" rel="noopener">@crystalr4ve</a></p>
         <ul>
           <li class="pasada"><span class="dia">06/11</span><span>gig techno pride</span></li>
           <li class="pasada"><span class="dia">07/11</span><span>popperazo pride</span></li>
