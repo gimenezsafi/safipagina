@@ -150,15 +150,15 @@
     align-items: center;
     justify-content: center;   /* el bloque de texto queda centrado: mismo margen a cada lado */
   }
-  /* velo semitransparente de la paleta: deja ver la cara y mantiene legible el texto blanco */
+  /* velo del color de fondo oscurecido: el recuadro se funde con la página y el texto blanco se lee */
   .ficha::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
     background: var(--claro);
-    background: color-mix(in srgb, var(--claro), var(--oscuro) 70%);
-    opacity: .5;
+    background: color-mix(in srgb, var(--fondo), var(--oscuro) 58%);
+    opacity: .62;
   }
   .ficha img {
     position: absolute;
@@ -169,12 +169,13 @@
     object-position: center top;
     transform: scale(-1.45, 1.45);        /* espejada y acercada a la cara */
     transform-origin: 50% 15%;
-    filter: grayscale(1) contrast(1.2) brightness(.7);   /* sin sus colores, la foto toma el tono del fondo */
-    opacity: .85;
+    filter: grayscale(1) contrast(1.1) brightness(.8);   /* sin sus colores, la foto toma el tono del fondo */
+    opacity: .6;
   }
   .fechas {
     position: relative;
     z-index: 2;
+    text-shadow: 0 0 .35em color-mix(in srgb, var(--oscuro) 55%, transparent);   /* refuerza la lectura del blanco */
     line-height: 1.55;
     white-space: nowrap;
   }
