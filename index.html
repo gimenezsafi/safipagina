@@ -138,7 +138,7 @@
     margin-top: calc(0.5 * var(--u));
   }
 
-  /* foto espejada, en gris y al 50% sobre el fondo: se tiñe con la paleta */
+  /* foto espejada, en gris y semitransparente sobre el fondo: se tiñe con la paleta */
   .ficha {
     grid-column: 2;
     grid-row: 2;
@@ -148,15 +148,15 @@
     display: flex;
     align-items: center;
   }
-  /* velo medio (claro con un poco de oscuro): lo más claro que mantiene legible el texto blanco */
+  /* velo semitransparente de la paleta: deja ver la cara y mantiene legible el texto blanco */
   .ficha::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
     background: var(--claro);
-    background: color-mix(in srgb, var(--claro), var(--oscuro) 35%);
-    opacity: .8;
+    background: color-mix(in srgb, var(--claro), var(--oscuro) 70%);
+    opacity: .5;
   }
   .ficha img {
     position: absolute;
@@ -164,10 +164,11 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 97% center;
-    transform: scaleX(-1);
-    filter: grayscale(1) brightness(.9);   /* sin sus colores, la foto toma el tono del fondo */
-    opacity: .5;
+    object-position: center top;
+    transform: scale(-1.45, 1.45);        /* espejada y acercada a la cara */
+    transform-origin: 50% 15%;
+    filter: grayscale(1) contrast(1.2) brightness(.7);   /* sin sus colores, la foto toma el tono del fondo */
+    opacity: .85;
   }
   .fechas {
     position: relative;
@@ -209,7 +210,7 @@
     .tags { margin-top: calc(1.5 * var(--u)); min-height: 2.5em; }
 
     .ficha { margin-top: calc(4 * var(--u)); height: calc(36 * var(--u)); }
-    .ficha img { object-position: center 15%; }
+    .ficha img { object-position: center 3%; transform: translateX(-10%) scale(-1.5, 1.5); transform-origin: 50% 45%; }
     /* fechas de a dos por renglón, en un recuadro bajo que ocupa todo el ancho */
     .fechas {
       width: 100%;
@@ -299,7 +300,7 @@
     <p class="tags" id="tags"></p>
 
     <aside class="ficha">
-      <img src="safi.jpg" alt="safi tocando con su controladora">
+      <img src="safi.jpg" alt="retrato de safi">
       <div class="fechas">
         <ul>
           <li class="pasada">06/11: gig techno pride</li>
