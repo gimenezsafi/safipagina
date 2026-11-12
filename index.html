@@ -3,12 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#c7adb0">
 <title>safi — presskit</title>
-<meta name="description" content="safi — DJ residente en artica y crystal rave. Bookings: hola@safi.ar">
+<meta name="description" content="safi — DJ open format, residente en 4rtica y crystalr4ve. Bookings: hola@safi.ar">
 <style>
-  /* --u es la unidad de toda la página: 1/100 del ancho de la maqueta */
-  /* se calcula con el ancho Y el alto de la ventana, así todo entra sin scroll */
-  :root { --u: min(1vw, 100vh / 60); --gris: #808080; }
+  /* --u es la unidad de toda la página: 1/100 del ancho de la maqueta.
+     Se calcula con el ancho Y el alto de la ventana, así todo entra sin scroll */
+  :root {
+    --u: min(1vw, 100vh / 60);
+    --fondo: #c7adb0;
+    --franja: rgba(255, 255, 255, .5);
+    --logo: #1e130f;
+    --texto: #4c383c;
+    --gris: #756569;
+  }
   @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 60); } }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -18,10 +26,10 @@
   body {
     display: flex;
     align-items: center;
-    background: #fff;
-    color: #000;
+    background: var(--fondo);
+    color: var(--texto);
     font-family: "Microsoft Sans Serif", Arial, Helvetica, sans-serif;
-    font-size: max(1.25 * var(--u), 9px);
+    font-size: calc(1.875 * var(--u));
     line-height: 1.25;
   }
 
@@ -35,72 +43,88 @@
 
   /* ---------- cabecera: logo + franja que sale de la "i" ---------- */
   .cabecera {
-    --alto: calc(9.5 * var(--u));
+    --alto: calc(10 * var(--u));
+    position: relative;
     display: flex;
     align-items: flex-end;
     height: var(--alto);
-    margin-bottom: calc(3 * var(--u));
+    margin-bottom: calc(2.6 * var(--u));
   }
   .logo {
+    position: relative;
+    z-index: 1;                      /* la "i" queda encima de la franja */
     flex: none;
     height: 100%;
     width: auto;
     overflow: visible;
     display: block;
+    fill: var(--logo);
   }
   .lado {
     flex: 1;
     height: 100%;
-    margin-left: -1px;              /* se pega al palo de la "i" */
+    margin-left: calc(-0.572 * var(--alto));  /* arranca en el borde de la "i" */
     display: grid;
-    grid-template-rows: 25.9% 74.1%; /* punto de la "i" / palo de la "i" */
+    grid-template-rows: 29.5% 70.5%;          /* punto de la "i" / cuerpo de la "i" */
     min-width: 0;
   }
+  .nav, .franja { padding-left: calc(1.115 * var(--alto)); }
   .nav {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: flex-end;
-    gap: calc(4 * var(--u));
-    padding-bottom: calc(0.5 * var(--u));
+    padding-bottom: calc(0.7 * var(--u));
     color: var(--gris);
   }
-  .nav a:hover { color: #000; }
+  .nav a { text-decoration: none; }
+  .nav a:hover { text-decoration: underline; }
+  .nav a[aria-current] { color: var(--logo); }
   .franja {
-    background: #000;
-    color: #fff;
+    grid-row: 2;
+    background: var(--franja);
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    text-align: right;
-    padding: 0 calc(2 * var(--u));
+    align-items: center;
+    padding-right: calc(2 * var(--u));
     white-space: nowrap;
   }
-  .franja .booking { font-size: calc(1.9 * var(--u)); }
 
   /* ---------- cuerpo ---------- */
   .cuerpo {
     display: grid;
-    grid-template-columns: 61fr 35fr;
-    column-gap: calc(3.5 * var(--u));
+    grid-template-columns: 539fr 310fr;
+    column-gap: calc(3.1 * var(--u));
   }
   .tabs {
     grid-column: 1;
     display: flex;
-    gap: calc(6 * var(--u));
+    gap: calc(3.1 * var(--u));
     margin-bottom: calc(0.9 * var(--u));
   }
   .tabs button {
+    display: flex;
+    align-items: center;
+    gap: .3em;
     font: inherit;
-    font-size: calc(1.9 * var(--u));
     text-transform: uppercase;
+    white-space: nowrap;
     background: none;
     border: 0;
     color: var(--gris);
     cursor: pointer;
   }
-  .tabs button:hover { text-decoration: underline; }
-  .tabs button[aria-selected="true"] { color: #000; }
+  .tabs button[aria-selected="true"] { color: var(--texto); }
+  .tabs .num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.22em;
+    height: 1.22em;
+    border: .12em solid currentColor;
+    border-radius: 50%;
+  }
+  .tabs .num b { font: bold .78em Consolas, "Courier New", monospace; }
+  .tabs button:hover .num,
+  .tabs button[aria-selected="true"] .num { background: var(--franja); }
 
   .video {
     grid-column: 1;
@@ -111,74 +135,72 @@
 
   .tags {
     grid-column: 1;
-    margin-top: calc(0.7 * var(--u));
+    margin-top: calc(0.5 * var(--u));
   }
 
+  /* foto espejada y oscurecida, con las fechas encima */
   .ficha {
     grid-column: 2;
     grid-row: 2;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-  .ficha img {
-    display: block;
-    width: 100%;
-    flex: 1;
-    min-height: 0;
-    object-fit: cover;
-    object-position: 80% center;
-  }
-  .fechas {
+    position: relative;
+    overflow: hidden;
     background: #000;
     color: #fff;
     display: flex;
-    justify-content: space-between;
-    gap: calc(1.5 * var(--u));
-    padding: calc(1.8 * var(--u)) calc(1.4 * var(--u));
-    font-size: max(1.05 * var(--u), 8px);
-    text-align: right;
+    align-items: center;
+  }
+  .ficha img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 97% center;
+    transform: scaleX(-1);
+    opacity: .5;
+  }
+  .fechas {
+    position: relative;
+    padding: 0 calc(1.4 * var(--u));
+    line-height: 1.55;
     white-space: nowrap;
   }
-  .fechas ul { list-style: none; }
-  .fechas .pasadas { text-decoration: line-through; }
-  .fechas .proximas li + li { margin-top: 1.25em; }
-  .fechas a { display: block; }
+  .fechas ul { list-style: none; margin-bottom: 1.55em; }
+  .fechas .pasada { text-decoration: line-through; }
 
   /* ---------- versión celular ---------- */
   @media (max-aspect-ratio: 1/1) {
-    :root { --u: min(1vw, 100vh / 162); }
-    @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 162); } }
-    body { font-size: calc(3.6 * var(--u)); }
+    :root { --u: min(1vw, 100vh / 168); }
+    @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 168); } }
+
+    body { font-size: calc(3.5 * var(--u)); }
     .pagina { padding: calc(6 * var(--u)) calc(4 * var(--u)); }
 
-    .cabecera { --alto: calc(16 * var(--u)); margin-bottom: calc(9 * var(--u)); }
+    /* el menú baja a una fila propia debajo del logo */
+    .cabecera { --alto: calc(16 * var(--u)); margin-bottom: calc(16 * var(--u)); }
     .lado { margin-right: calc(-4 * var(--u)); }   /* la franja llega al borde */
     .nav {
-      justify-content: space-between;
-      gap: 0;
-      padding: 0 calc(4 * var(--u)) calc(0.6 * var(--u)) calc(5 * var(--u));
-      font-size: calc(3.1 * var(--u));
-      color: #000;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 4.5 * var(--u));
+      padding: 0;
     }
-    .franja { padding: 0 calc(4 * var(--u)) 0 0; font-size: calc(2.7 * var(--u)); }
-    .franja .booking { font-size: calc(4 * var(--u)); }
+    .franja {
+      padding-left: calc(0.72 * var(--alto));
+      padding-right: calc(4 * var(--u));
+      font-size: calc(3 * var(--u));
+      white-space: normal;
+    }
 
     .cuerpo { display: block; }
-    .tabs { justify-content: space-between; gap: 0; margin-bottom: calc(1.5 * var(--u)); }
-    .tabs button { font-size: calc(4 * var(--u)); }
-    .tags { margin-top: calc(1.5 * var(--u)); }
+    .tabs { justify-content: space-between; gap: 0; margin-bottom: calc(1.5 * var(--u)); font-size: calc(3.3 * var(--u)); }
+    .tags { margin-top: calc(1.5 * var(--u)); min-height: 2.5em; }
 
-    .ficha { flex-direction: row; margin-top: calc(9 * var(--u)); }
-    .ficha img { flex: none; width: 58%; aspect-ratio: 3 / 2; }
-    .fechas {
-      flex: 1;
-      flex-direction: column;
-      justify-content: center;
-      gap: 1.25em;
-      padding: calc(3 * var(--u));
-      font-size: calc(2.7 * var(--u));
-    }
+    .ficha { margin-top: calc(4 * var(--u)); height: calc(46 * var(--u)); }
+    .ficha img { object-position: center 15%; }
+    .fechas { padding: 0 calc(4 * var(--u)); }
+    .fechas ul { margin-bottom: 1em; }
   }
 </style>
 </head>
@@ -186,24 +208,25 @@
 <div class="pagina">
 
   <header class="cabecera">
-    <svg class="logo" viewBox="0 0 439.96 183.44" role="img" aria-label="safi" fill="#000">
-      <path transform="translate(-7.80 183.44)" d="M 7.81 -44.16 L 34.84 -44.16 C 36.01 -35.47 40.02 -28.77 46.88 -24.05 C 53.74 -19.34 63 -16.98 74.66 -16.98 C 88.05 -16.98 98.47 -18.8 105.91 -22.44 C 113.35 -26.08 117.08 -31.13 117.08 -37.58 C 117.08 -42.3 115.34 -45.88 111.86 -48.31 C 108.39 -50.75 101.9 -52.75 92.39 -54.33 L 62.02 -59.66 C 43.33 -62.8 30.7 -67.1 24.13 -72.55 C 17.55 -78 14.27 -86.15 14.27 -96.98 C 14.27 -111.2 19.45 -122.03 29.83 -129.47 C 40.2 -136.92 55.35 -140.64 75.28 -140.64 C 94.22 -140.64 109.16 -136.69 120.11 -128.8 C 131.07 -120.9 136.92 -109.8 137.67 -95.5 L 113.48 -95.5 C 112.9 -103.35 109.35 -109.38 102.81 -113.59 C 96.28 -117.81 87.14 -119.92 75.41 -119.92 C 63.74 -119.92 54.85 -118.13 48.73 -114.53 C 42.62 -110.94 39.56 -105.75 39.56 -98.97 C 39.56 -94.34 41.17 -90.84 44.39 -88.48 C 47.62 -86.13 54.57 -83.92 65.23 -81.86 L 94 -76.52 C 111.69 -73.3 124.19 -68.98 131.52 -63.56 C 138.84 -58.15 142.5 -50.65 142.5 -41.06 C 142.5 -26.26 136.71 -14.91 125.13 -7.02 C 113.56 0.88 96.86 4.83 75.03 4.83 C 54.03 4.83 37.82 0.69 26.41 -7.58 C 15 -15.84 8.8 -28.04 7.81 -44.16 Z"/>
-      <path transform="translate(142.32 183.44)" d="M 122.41 -21.08 C 116.29 -13.14 108.35 -7.08 98.59 -2.91 C 88.84 1.26 77.72 3.34 65.23 3.34 C 48.54 3.34 35.6 -0.25 26.42 -7.44 C 17.24 -14.63 12.66 -24.68 12.66 -37.58 C 12.66 -44.61 14.29 -50.87 17.55 -56.36 C 20.82 -61.86 25.72 -66.59 32.25 -70.56 C 35.47 -72.55 40.11 -74.21 46.19 -75.53 C 52.27 -76.85 62.18 -78.26 75.91 -79.75 C 78.3 -80 81.77 -80.37 86.33 -80.86 C 109.55 -83.1 121.17 -86.57 121.17 -91.28 L 121.17 -98.72 C 121.17 -105.41 117.69 -110.6 110.75 -114.28 C 103.8 -117.96 93.92 -119.8 81.11 -119.8 C 68.3 -119.8 58.5 -117.64 51.72 -113.34 C 44.94 -109.05 41.14 -102.48 40.31 -93.63 L 16.38 -93.63 C 17.29 -108.84 23.3 -120.5 34.42 -128.61 C 45.54 -136.71 61.11 -140.77 81.11 -140.77 C 101.37 -140.77 117.14 -137.17 128.42 -129.98 C 139.71 -122.78 145.36 -112.74 145.36 -99.84 L 145.36 -34.84 C 145.36 -28.56 146.14 -24.22 147.72 -21.83 C 149.29 -19.43 152.1 -18.23 156.16 -18.23 C 157.48 -18.23 158.92 -18.34 160.47 -18.55 C 162.03 -18.76 163.75 -19.07 165.58 -19.48 L 165.58 -1.48 C 162.18 -0.33 158.86 0.52 155.59 1.05 C 152.33 1.59 149.21 1.86 146.23 1.86 C 138.87 1.86 133.27 0.02 129.42 -3.66 C 125.58 -7.34 123.24 -13.14 122.41 -21.08 Z M 121.17 -66.72 C 115.96 -64.82 109.73 -63.32 102.5 -62.2 C 95.27 -61.08 84.74 -59.9 70.94 -58.66 C 58.79 -57.5 50.21 -55.36 45.2 -52.27 C 40.2 -49.17 37.7 -44.52 37.7 -38.33 C 37.7 -31.54 40.41 -26.23 45.83 -22.39 C 51.24 -18.54 58.74 -16.63 68.33 -16.63 C 84.2 -16.63 96.97 -19.87 106.64 -26.36 C 116.33 -32.85 121.17 -41.35 121.17 -51.84 Z"/>
-      <path transform="translate(312.75 183.44)" d="M 28.16 0 L 28.16 -114.59 L 4.34 -114.59 L 4.34 -135.94 L 28.16 -135.94 L 28.16 -150.06 C 28.16 -161.73 30.96 -170.21 36.58 -175.5 C 42.2 -180.79 51.18 -183.44 63.5 -183.44 C 67.88 -183.44 71.91 -183.27 75.59 -182.94 C 79.27 -182.6 82.77 -182.07 86.08 -181.33 L 86.08 -159.25 C 83.18 -159.82 80.37 -160.25 77.64 -160.55 C 74.91 -160.84 72.3 -160.98 69.83 -160.98 C 63.46 -160.98 59.04 -159.82 56.55 -157.5 C 54.07 -155.19 52.83 -150.97 52.83 -144.86 L 52.83 -135.94 L 86.08 -135.94 L 86.08 -114.59 L 52.83 -114.59 L 52.83 0 Z"/>
-      <path transform="translate(395.56 183.44)" d="M 44.41 -153.67 L 19.84 -153.67 L 19.84 -183.44 L 44.41 -183.44 Z M 19.84 0 L 19.84 -135.94 L 44.41 -135.94 L 44.41 0 Z"/>
+    <svg class="logo" viewBox="122.32 72.32 559.68 192.3" role="img" aria-label="safi">
+        <path d="M 230.9 225.07 C 230.9 232.74 229.2 239.29 225.81 244.71 C 222.41 250.14 217.92 254.54 212.32 257.94 C 206.72 261.33 200.37 263.8 193.27 265.34 C 186.18 266.89 178.93 267.66 171.52 267.66 C 161.64 267.66 152.74 267.2 144.8 266.27 C 136.87 265.34 129.38 264 122.32 262.23 L 122.32 233.14 C 130.61 236.58 138.88 239.07 147.12 240.61 C 155.36 242.16 163.14 242.93 170.46 242.93 C 178.93 242.93 185.25 241.58 189.44 238.89 C 193.62 236.2 195.72 232.7 195.72 228.38 C 195.72 226.35 195.28 224.5 194.4 222.82 C 193.52 221.15 191.86 219.54 189.44 218 C 187.01 216.46 183.6 214.87 179.19 213.24 C 174.78 211.61 169.01 209.78 161.87 207.75 C 155.25 205.9 149.46 203.8 144.48 201.47 C 139.49 199.13 135.37 196.38 132.11 193.2 C 128.85 190.03 126.4 186.35 124.77 182.16 C 123.14 177.97 122.32 173.05 122.32 167.41 C 122.32 161.95 123.56 156.79 126.03 151.94 C 128.49 147.09 132.18 142.84 137.07 139.18 C 141.96 135.52 148.07 132.63 155.39 130.52 C 162.7 128.4 171.25 127.34 181.04 127.34 C 189.5 127.34 197 127.79 203.52 128.66 C 210.05 129.55 215.82 130.52 220.85 131.57 L 220.85 157.89 C 213.18 155.42 205.97 153.68 199.23 152.67 C 192.48 151.66 185.8 151.15 179.19 151.15 C 172.58 151.15 167.27 152.34 163.25 154.72 C 159.24 157.1 157.24 160.4 157.24 164.64 C 157.24 166.66 157.63 168.47 158.43 170.06 C 159.22 171.64 160.79 173.19 163.12 174.69 C 165.46 176.19 168.72 177.75 172.91 179.38 C 177.09 181.02 182.63 182.8 189.5 184.74 C 197.26 186.94 203.79 189.3 209.08 191.81 C 214.37 194.32 218.62 197.17 221.84 200.34 C 225.06 203.52 227.37 207.13 228.79 211.19 C 230.19 215.24 230.9 219.87 230.9 225.07"/>
+        <path d="M 348.6 205.23 L 328.89 205.23 C 323.43 205.23 318.8 205.77 315.01 206.82 C 311.22 207.88 308.13 209.34 305.75 211.19 C 303.37 213.04 301.63 215.18 300.53 217.6 C 299.43 220.03 298.88 222.61 298.88 225.34 C 298.88 230.8 300.64 234.97 304.16 237.84 C 307.69 240.7 312.5 242.13 318.58 242.13 C 323.08 242.13 327.75 240.5 332.6 237.24 C 337.45 233.98 342.78 229.3 348.6 223.22 Z M 353.23 264.61 L 352.44 247.03 C 349.61 250.02 346.66 252.78 343.57 255.29 C 340.49 257.8 337.09 259.98 333.39 261.84 C 329.69 263.69 325.66 265.12 321.29 266.14 C 316.93 267.15 312.14 267.66 306.94 267.66 C 300.07 267.66 294.03 266.64 288.82 264.61 C 283.62 262.59 279.26 259.77 275.73 256.15 C 272.21 252.54 269.54 248.17 267.73 243.06 C 265.92 237.95 265.02 232.3 265.02 226.13 C 265.02 219.78 266.36 213.92 269.05 208.54 C 271.74 203.16 275.84 198.54 281.35 194.66 C 286.86 190.78 293.74 187.73 301.98 185.53 C 310.23 183.33 319.9 182.23 331.01 182.23 L 348.6 182.23 L 348.6 174.16 C 348.6 170.72 348.11 167.61 347.14 164.83 C 346.18 162.06 344.61 159.7 342.45 157.76 C 340.29 155.82 337.49 154.32 334.05 153.26 C 330.61 152.2 326.38 151.68 321.36 151.68 C 313.42 151.68 305.6 152.58 297.88 154.39 C 290.17 156.2 282.7 158.73 275.47 161.99 L 275.47 136.2 C 281.9 133.64 289.33 131.53 297.75 129.86 C 306.17 128.18 314.92 127.34 324 127.34 C 333.96 127.34 342.52 128.29 349.66 130.18 C 356.8 132.08 362.68 134.93 367.31 138.71 C 371.94 142.51 375.36 147.25 377.56 152.93 C 379.77 158.62 380.87 165.25 380.87 172.84 L 380.87 264.61 Z M 353.23 264.61"/>
+        <path d="M 538.51 105.12 C 534.63 103.89 530.02 102.86 524.69 102.02 C 519.36 101.18 513.91 100.76 508.36 100.76 C 504.57 100.76 501.04 101.27 497.78 102.28 C 494.52 103.29 491.7 104.91 489.31 107.11 C 486.93 109.31 485.06 112.11 483.69 115.5 C 482.32 118.9 481.64 123.02 481.64 127.87 L 481.64 149.56 L 534.41 149.56 L 534.41 174.69 L 481.64 174.69 L 481.64 264.62 L 449.11 264.62 L 449.11 174.69 L 410.1 174.69 L 410.1 149.56 L 449.11 149.56 L 449.11 129.19 C 449.11 119.67 450.5 111.5 453.28 104.66 C 456.05 97.83 459.98 92.23 465.05 87.86 C 470.11 83.5 476.22 80.3 483.36 78.28 C 490.5 76.25 498.48 75.23 507.3 75.23 C 513.12 75.23 518.65 75.61 523.9 76.36 C 529.14 77.11 534.01 78.01 538.51 79.07 Z M 538.51 105.12"/>
+        <path d="M 645.9 93.48 C 645.9 96.39 645.37 99.13 644.31 101.68 C 643.25 104.24 641.77 106.47 639.88 108.36 C 637.98 110.26 635.75 111.76 633.2 112.86 C 630.64 113.96 627.86 114.51 624.87 114.51 C 621.87 114.51 619.07 113.96 616.47 112.86 C 613.87 111.76 611.62 110.26 609.73 108.36 C 607.83 106.47 606.35 104.24 605.3 101.68 C 604.24 99.13 603.71 96.39 603.71 93.48 C 603.71 90.58 604.24 87.84 605.3 85.29 C 606.35 82.73 607.83 80.48 609.73 78.54 C 611.62 76.6 613.87 75.08 616.47 73.98 C 619.07 72.88 621.87 72.32 624.87 72.32 C 627.86 72.32 630.64 72.88 633.2 73.98 C 635.75 75.08 637.98 76.6 639.88 78.54 C 641.77 80.48 643.25 82.73 644.31 85.29 C 645.37 87.84 645.9 90.58 645.9 93.48 M 610.19 155.38 L 572.23 155.38 L 572.23 130.25 L 643.25 130.25 L 643.25 239.49 L 682 239.49 L 682 264.62 L 567.61 264.62 L 567.61 239.49 L 610.19 239.49 Z M 610.19 155.38"/>
     </svg>
 
     <div class="lado">
       <nav class="nav">
         <!-- reemplazar por los links personales -->
+        <a href="#" aria-current="page">about</a>
+        <a href="#" target="_blank" rel="noopener">rider</a>
+        <a href="#" target="_blank" rel="noopener">presskit</a>
         <a href="https://instagram.com" target="_blank" rel="noopener">instagram</a>
         <a href="https://soundcloud.com" target="_blank" rel="noopener">soundcloud</a>
-        <a href="#" target="_blank" rel="noopener">rider</a>
       </nav>
-      <div class="franja">
-        <p>DJ residente en artica y crystal rave</p>
-        <p class="booking"><a href="mailto:hola@safi.ar">bookings: hola@safi.ar</a></p>
-      </div>
+      <p class="franja"><span>DJ open format, residente en
+        <a href="https://instagram.com/4rtica" target="_blank" rel="noopener">@4rtica</a> y
+        <a href="https://instagram.com/crystalr4ve" target="_blank" rel="noopener">@crystalr4ve</a></span></p>
     </div>
   </header>
 
@@ -211,14 +234,14 @@
     <!-- para cambiar un set: data-video = ID del video de YouTube, data-tags = etiquetas -->
     <div class="tabs" role="tablist" aria-label="sets">
       <button role="tab" aria-selected="true"
-              data-video="sQHq2Ykv404"
-              data-tags="pop, reguetón, electropop, pop nacional, pop internacional">pop</button>
+              data-video="p5u6rpDPImM"
+              data-tags="techno, hard techno, house, trance, hardgroove">electrónica <span class="num"><b>1</b></span></button>
       <button role="tab" aria-selected="false"
               data-video="v2Yix5gc89k"
-              data-tags="electropop, hyperpop, dance pop, house, remixes">electrónica pop</button>
+              data-tags="electropop, hyperpop, dance pop, house, remixes">electrónica pop <span class="num"><b>2</b></span></button>
       <button role="tab" aria-selected="false"
-              data-video="p5u6rpDPImM"
-              data-tags="techno, hard techno, house, trance, hardgroove">electrónica</button>
+              data-video="sQHq2Ykv404"
+              data-tags="pop, reguetón, electropop, pop nacional">pop <span class="num"><b>3</b></span></button>
     </div>
 
     <div class="video">
@@ -232,16 +255,14 @@
     <aside class="ficha">
       <img src="safi.jpg" alt="safi tocando con su controladora">
       <div class="fechas">
-        <ul class="pasadas">
-          <li>31/10: 4rtica halloween</li>
-          <li>06/11: gig techno pride</li>
-          <li>07/11: popperazo pride</li>
-        </ul>
-        <ul class="proximas">
+        <ul>
+          <li class="pasada">06/11: gig techno pride</li>
+          <li class="pasada">07/11: popperazo pride</li>
           <li>31/12: 4rtica año nuevo
             <a href="https://www.tikzet.com/events/4rtica" target="_blank" rel="noopener">tickets</a></li>
           <li>02/01: TBA</li>
         </ul>
+        <a href="mailto:hola@safi.ar">bookings: hola@safi.ar</a>
       </div>
     </aside>
   </main>
