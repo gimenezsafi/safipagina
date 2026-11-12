@@ -16,6 +16,7 @@
     --claro: #7A6F72;
     --fondo: #C7ADB0;
     --barra: #E3D6D7;
+    --linea: max(1px, calc(0.07 * var(--u)));
   }
   @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 60); } }
 
@@ -176,10 +177,20 @@
     position: relative;
     z-index: 2;
     text-shadow: 0 0 .35em color-mix(in srgb, var(--oscuro) 55%, transparent);   /* refuerza la lectura del blanco */
-    line-height: 1.55;
-    white-space: nowrap;
+    width: 100%;
+    padding: 0 calc(2 * var(--u));
   }
-  .fechas ul { list-style: none; margin-bottom: 1.55em; }
+  /* filas con una línea fina arriba: dato a la izquierda, valor a la derecha */
+  .fechas ul { list-style: none; }
+  .fechas li, .fechas .booking {
+    display: flex;
+    justify-content: space-between;
+    gap: calc(1.5 * var(--u));
+    padding: .5em 0;
+    border-top: var(--linea) solid var(--barra);
+  }
+  .fechas li span:last-child { text-align: right; }
+  .fechas .dia { color: var(--barra); white-space: nowrap; }
   .fechas .pasada { text-decoration: line-through; }
 
   /* ---------- vistas: about y rider ocupan el mismo lugar ---------- */
@@ -199,11 +210,12 @@
     display: grid;
     grid-template-columns: auto 1fr;
     align-content: center;
-    gap: calc(3 * var(--u)) calc(5 * var(--u));
     padding: calc(4 * var(--u)) calc(5 * var(--u));
     font-size: 1.4em;
   }
-  .rider dt { color: var(--claro); }
+  .rider dt, .rider dd { padding: .8em 0; border-top: var(--linea) solid var(--oscuro); }
+  .rider dt { color: var(--claro); padding-right: calc(4 * var(--u)); }
+  .rider dd { text-align: right; }
   .rider p { margin-top: calc(0.5 * var(--u)); }
 
   /* ---------- versión celular ---------- */
@@ -232,13 +244,7 @@
 
     .cuerpo { display: block; }
     .rider h2 { font-size: calc(3.3 * var(--u)); margin-bottom: calc(1.5 * var(--u)); }
-    .rider dl {
-      grid-template-columns: 1fr;
-      gap: 0;
-      padding: calc(4 * var(--u));
-      font-size: 1.25em;
-    }
-    .rider dd + dt { margin-top: calc(6 * var(--u)); }
+    .rider dl { padding: calc(4 * var(--u)); font-size: 1em; }
     .rider p { margin-top: calc(1.5 * var(--u)); }
     .tabs { margin-bottom: calc(1.5 * var(--u)); font-size: calc(3.3 * var(--u)); }
     .tags { margin-top: calc(1.5 * var(--u)); }
@@ -249,19 +255,25 @@
     .fechas {
       width: 100%;
       height: 100%;
-      padding: calc(3.5 * var(--u)) calc(4 * var(--u));
-      display: flex;
-      flex-direction: column;
-      gap: calc(1.5 * var(--u));
+      padding: calc(2 * var(--u)) calc(4 * var(--u));
     }
     .fechas ul {
-      margin: 0;
       display: grid;
       grid-template-columns: auto auto;
       justify-content: space-between;
-      row-gap: calc(1.5 * var(--u));
     }
+    /* en celular cada fecha va en una sola frase y de a dos por renglón */
+    .fechas li, .fechas .booking { display: block; white-space: nowrap; padding: calc(1.5 * var(--u)) 0; }
+    .fechas li:nth-child(-n+2) { border-top: 0; }
     .fechas li:nth-child(even) { text-align: right; }
+    .fechas .dia { color: inherit; }
+    .fechas .dia::after { content: ": "; }
+    .fechas ul { position: relative; }
+    .fechas ul::after {   /* línea entera entre el primer y el segundo renglón */
+      content: ""; position: absolute; left: 0; right: 0; top: 50%;
+      border-top: var(--linea) solid var(--barra);
+    }
+    .fechas li:nth-child(n+3) { border-top: 0; }
   }
 </style>
 <script>
@@ -334,13 +346,13 @@
       <img src="safi.jpg" alt="retrato de safi">
       <div class="fechas">
         <ul>
-          <li class="pasada">06/11: gig techno pride</li>
-          <li class="pasada">07/11: popperazo pride</li>
-          <li>31/12: 4rtica año nuevo
-            <a href="https://www.tikzet.com/events/4rtica" target="_blank" rel="noopener">tickets</a></li>
-          <li>02/01: TBA</li>
+          <li class="pasada"><span class="dia">06/11</span><span>gig techno pride</span></li>
+          <li class="pasada"><span class="dia">07/11</span><span>popperazo pride</span></li>
+          <li><span class="dia">31/12</span><span>4rtica año nuevo
+            <a href="https://www.tikzet.com/events/4rtica" target="_blank" rel="noopener">tickets</a></span></li>
+          <li><span class="dia">02/01</span><span>TBA</span></li>
         </ul>
-        <a href="mailto:hola@safi.ar">bookings: hola@safi.ar</a>
+        <p class="booking"><span class="dia">bookings</span><a href="mailto:hola@safi.ar">hola@safi.ar</a></p>
       </div>
     </aside>
   </main>
