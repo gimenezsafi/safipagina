@@ -5,7 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#c7adb0">
 <title>safi — presskit</title>
-<meta name="description" content="safi — DJ open format, residente en 4rtica y crystalr4ve. Bookings: hola@safi.ar">
+<meta name="description" content="safi — DJ open format, residente en 4rtica y crystalr4ve. Sets, rider técnico y bookings: hola@safi.ar">
+<!-- vista previa al compartir el link (WhatsApp, Instagram, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="safi — presskit">
+<meta property="og:description" content="DJ open format, residente en 4rtica y crystalr4ve. Sets, rider técnico y bookings.">
+<meta property="og:url" content="https://gimenezsafi.github.io/safipagina/">
+<meta property="og:image" content="https://gimenezsafi.github.io/safipagina/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
   /* --u es la unidad de toda la página: 1/100 del ancho de la maqueta.
      Se calcula con el ancho Y el alto de la ventana, así todo entra sin scroll */
@@ -210,13 +220,33 @@
     display: grid;
     grid-template-columns: auto 1fr;
     align-content: center;
-    padding: calc(4 * var(--u)) calc(5 * var(--u));
+    padding: calc(2.5 * var(--u)) calc(5 * var(--u));
     font-size: 1.4em;
   }
   .rider dt, .rider dd { padding: .8em 0; border-top: var(--linea) solid var(--oscuro); }
   .rider dt { color: var(--claro); padding-right: calc(4 * var(--u)); }
   .rider dd { text-align: right; }
-  .rider p { margin-top: calc(0.5 * var(--u)); }
+  .rider > p { margin-top: calc(0.5 * var(--u)); }
+
+  /* presskit: bio a la izquierda (ancho del video) y datos a la derecha (ancho de la foto) */
+  .kit-cuerpo {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 539fr 310fr;
+    column-gap: calc(3.1 * var(--u));
+  }
+  .kit .bio {
+    background: var(--barra);
+    display: flex;
+    align-items: center;
+    padding: calc(3 * var(--u)) calc(4 * var(--u));
+    font-size: 1.25em;
+    line-height: 1.4;
+  }
+  .kit dl { background: none; padding: 0; font-size: 1em; }
+  .kit dt, .kit dd { padding: .5em 0; }
+  .kit dt { padding-right: calc(2 * var(--u)); }
 
   /* ---------- versión celular ---------- */
   @media (max-aspect-ratio: 1/1) {
@@ -245,7 +275,11 @@
     .cuerpo { display: block; }
     .rider h2 { font-size: calc(3.3 * var(--u)); margin-bottom: calc(1.5 * var(--u)); }
     .rider dl { padding: calc(4 * var(--u)); font-size: 1em; }
-    .rider p { margin-top: calc(1.5 * var(--u)); }
+    .rider > p { margin-top: calc(1.5 * var(--u)); }
+    .kit-cuerpo { display: block; }
+    .kit .bio { padding: calc(4 * var(--u)); font-size: 1em; margin-bottom: calc(2 * var(--u)); }
+    .kit dl { padding: 0; }
+    .kit dt, .kit dd { padding: .65em 0; }
     .tabs { margin-bottom: calc(1.5 * var(--u)); font-size: calc(3.3 * var(--u)); }
     .tags { margin-top: calc(1.5 * var(--u)); }
 
@@ -309,10 +343,10 @@
 
     <div class="lado">
       <nav class="nav">
-        <!-- about y rider cambian la vista de abajo; presskit todavía no tiene destino -->
+        <!-- about, rider y presskit cambian la vista de abajo -->
         <a href="#about" data-ir="about" aria-current="page">about</a>
         <a href="#rider" data-ir="rider">rider</a>
-        <a href="#about">presskit</a>
+        <a href="#presskit" data-ir="presskit">presskit</a>
         <a href="https://www.instagram.com/safi.ags/" target="_blank" rel="noopener">instagram</a>
         <a href="https://soundcloud.com/safi_ags" target="_blank" rel="noopener">soundcloud</a>
       </nav>
@@ -367,6 +401,26 @@
       <dt>all in one y controladoras</dt>
       <dd>pioneer</dd>
     </dl>
+    <p>bookings: <a href="mailto:hola@safi.ar">hola@safi.ar</a></p>
+  </section>
+
+  <section class="rider kit oculta" data-vista="presskit">
+    <h2>presskit</h2>
+    <div class="kit-cuerpo">
+      <p class="bio">safi es DJ open format, residente en 4rtica y crystalr4ve. Sus sets van de la electrónica al pop: techno, hard techno, house, trance y hardgroove de un lado; pop, reguetón y pop nacional del otro, con la electrónica pop como puente.</p>
+      <dl>
+        <dt>formato</dt>
+        <dd>open format</dd>
+        <dt>residencias</dt>
+        <dd>4rtica · crystalr4ve</dd>
+        <dt>sets</dt>
+        <dd>electrónica · electrónica pop · pop</dd>
+        <dt>instagram</dt>
+        <dd><a href="https://www.instagram.com/safi.ags/" target="_blank" rel="noopener">@safi.ags</a></dd>
+        <dt>soundcloud</dt>
+        <dd><a href="https://soundcloud.com/safi_ags" target="_blank" rel="noopener">safi_ags</a></dd>
+      </dl>
+    </div>
     <p>bookings: <a href="mailto:hola@safi.ar">hola@safi.ar</a></p>
   </section>
   </div>
@@ -441,12 +495,12 @@
 
   actual = tabs[Math.floor(Math.random() * tabs.length)];   // un set al azar cada vez que entrás
 
-  /* about / rider: se muestra una vista u otra según el link del menú (#about o #rider) */
+  /* about / rider / presskit: se muestra una vista u otra según el link del menú (#about, #rider, #presskit) */
   var vistas = document.querySelectorAll('[data-vista]');
   var links = document.querySelectorAll('[data-ir]');
 
   function mostrar() {
-    var nombre = location.hash === '#rider' ? 'rider' : 'about';
+    var nombre = { '#rider': 'rider', '#presskit': 'presskit' }[location.hash] || 'about';
     for (var i = 0; i < vistas.length; i++) {
       vistas[i].classList.toggle('oculta', vistas[i].getAttribute('data-vista') !== nombre);
     }
