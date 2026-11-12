@@ -11,11 +11,11 @@
      Se calcula con el ancho Y el alto de la ventana, así todo entra sin scroll */
   :root {
     --u: min(1vw, 100vh / 60);
-    --fondo: #c7adb0;
-    --franja: rgba(255, 255, 255, .5);
-    --logo: #1e130f;
-    --texto: #4c383c;
-    --gris: #756569;
+    /* paleta: solo 3 colores + el claro de la barra (se elige una al azar al entrar) */
+    --oscuro: #1E130F;
+    --claro: #7A6F72;
+    --fondo: #C7ADB0;
+    --barra: #E3D6D7;
   }
   @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 60); } }
 
@@ -27,7 +27,7 @@
     display: flex;
     align-items: center;
     background: var(--fondo);
-    color: var(--texto);
+    color: var(--oscuro);
     font-family: "Microsoft Sans Serif", Arial, Helvetica, sans-serif;
     font-size: calc(1.875 * var(--u));
     line-height: 1.25;
@@ -58,7 +58,7 @@
     width: auto;
     overflow: visible;
     display: block;
-    fill: var(--logo);
+    fill: var(--oscuro);
   }
   .lado {
     flex: 1;
@@ -74,14 +74,14 @@
     justify-content: space-between;
     align-items: flex-end;
     padding-bottom: calc(0.7 * var(--u));
-    color: var(--gris);
+    color: var(--claro);
   }
   .nav a { text-decoration: none; }
   .nav a:hover { text-decoration: underline; }
-  .nav a[aria-current] { color: var(--logo); }
+  .nav a[aria-current] { color: var(--oscuro); }
   .franja {
     grid-row: 2;
-    background: var(--franja);
+    background: var(--barra);
     display: flex;
     align-items: center;
     padding-right: calc(2 * var(--u));
@@ -109,10 +109,10 @@
     white-space: nowrap;
     background: none;
     border: 0;
-    color: var(--gris);
+    color: var(--claro);
     cursor: pointer;
   }
-  .tabs button[aria-selected="true"] { color: var(--texto); }
+  .tabs button[aria-selected="true"] { color: var(--oscuro); }
   .tabs .num {
     display: flex;
     align-items: center;
@@ -124,7 +124,7 @@
   }
   .tabs .num b { font: bold .78em Consolas, "Courier New", monospace; }
   .tabs button:hover .num,
-  .tabs button[aria-selected="true"] .num { background: var(--franja); }
+  .tabs button[aria-selected="true"] .num { background: var(--barra); }
 
   .video {
     grid-column: 1;
@@ -144,10 +144,18 @@
     grid-row: 2;
     position: relative;
     overflow: hidden;
-    background: #000;
-    color: #fff;
+    color: #ffffff;
     display: flex;
     align-items: center;
+  }
+  /* recuadro negro al 50% por encima de la foto (que también va al 50%) */
+  .ficha::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: #000000;
+    opacity: .5;
   }
   .ficha img {
     position: absolute;
@@ -161,6 +169,7 @@
   }
   .fechas {
     position: relative;
+    z-index: 2;
     padding: 0 calc(1.4 * var(--u));
     line-height: 1.55;
     white-space: nowrap;
@@ -203,6 +212,25 @@
     .fechas ul { margin-bottom: 1em; }
   }
 </style>
+<script>
+  /* paletas: misma familia que el rosa, una distinta cada vez que entrás */
+  var paletas = [
+    { oscuro: '#1E130F', claro: '#7A6F72', fondo: '#C7ADB0', barra: '#E3D6D7' },  // rosa
+    { oscuro: '#171F0F', claro: '#727C6E', fondo: '#B3C8AC', barra: '#D8E2D4' },  // salvia
+    { oscuro: '#0F161F', claro: '#6E767C', fondo: '#ACBCC8', barra: '#D4DCE2' },  // celeste
+    { oscuro: '#160F1F', claro: '#746E7C', fondo: '#B8ACC8', barra: '#DAD4E2' },  // lila
+    { oscuro: '#1F170F', claro: '#7C776E', fondo: '#C8BEAC', barra: '#E2DDD4' },  // arena
+  ];
+  (function () {
+    var anterior = -1, n;
+    try { anterior = Number(localStorage.getItem('paleta')); } catch (e) {}
+    do { n = Math.floor(Math.random() * paletas.length); } while (n === anterior);
+    try { localStorage.setItem('paleta', n); } catch (e) {}
+    var p = paletas[n], raiz = document.documentElement.style;
+    for (var color in p) raiz.setProperty('--' + color, p[color]);
+    document.querySelector('meta[name="theme-color"]').content = p.fondo;
+  })();
+</script>
 </head>
 <body>
 <div class="pagina">
