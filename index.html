@@ -208,8 +208,23 @@
 
     .ficha { margin-top: calc(4 * var(--u)); height: calc(46 * var(--u)); }
     .ficha img { object-position: center 15%; }
-    .fechas { padding: 0 calc(4 * var(--u)); }
-    .fechas ul { margin-bottom: 1em; }
+    /* fechas de a dos por renglón, ocupando todo el ancho y el alto de la foto */
+    .fechas {
+      width: 100%;
+      height: 100%;
+      padding: calc(4 * var(--u));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .fechas ul {
+      margin: 0;
+      display: grid;
+      grid-template-columns: auto auto;
+      justify-content: space-between;
+      row-gap: calc(10.8 * var(--u));   /* los tres renglones quedan repartidos parejo */
+    }
+    .fechas li:nth-child(even) { text-align: right; }
   }
 </style>
 <script>
