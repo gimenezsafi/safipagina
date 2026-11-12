@@ -189,6 +189,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;   /* lema arriba, fechas abajo, mismo margen en los cuatro lados */
+    font-size: .92em;
   }
   /* filas con una línea fina arriba: dato a la izquierda, valor a la derecha */
   .fechas ul { list-style: none; }
@@ -196,7 +197,7 @@
     display: flex;
     justify-content: space-between;
     gap: calc(1.5 * var(--u));
-    padding: .4em 0;
+    padding: .3em 0;
     border-top: var(--linea) solid var(--barra);
   }
   .fechas li span:last-child { text-align: right; }
@@ -436,27 +437,22 @@
       height: 100%;
       display: block;
       height: auto;
+      font-size: 1em;
       padding: calc(3 * var(--u)) calc(4 * var(--u)) calc(1.5 * var(--u));
     }
     .fechas .lema { padding-bottom: calc(2.5 * var(--u)); }
     .fechas ul {
       border-top: var(--linea) solid var(--barra);
       display: grid;
-      grid-template-columns: auto auto;
-      justify-content: space-between;
+      grid-template-columns: auto 1fr;
     }
-    /* en celular cada fecha va en una sola frase y de a dos por renglón */
+    /* en celular cada fecha va en una sola frase y de a dos por renglón, con una línea entre renglones */
     .fechas li, .fechas .booking { display: block; white-space: nowrap; padding: calc(1.5 * var(--u)) 0; }
     .fechas li:nth-child(-n+2) { border-top: 0; }
     .fechas li:nth-child(even) { text-align: right; }
+    .fechas li:last-child:nth-child(odd) { grid-column: 1 / -1; }   /* fecha suelta: ocupa todo el renglón */
     .fechas .dia { color: inherit; }
     .fechas .dia::after { content: ": "; }
-    .fechas ul { position: relative; }
-    .fechas ul::after {   /* línea entera entre el primer y el segundo renglón */
-      content: ""; position: absolute; left: 0; right: 0; top: 50%;
-      border-top: var(--linea) solid var(--barra);
-    }
-    .fechas li:nth-child(n+3) { border-top: 0; }
   }
 </style>
 <script>
@@ -531,6 +527,7 @@
         <ul>
           <li class="pasada"><span class="dia">06/11</span><span>gig techno pride</span></li>
           <li class="pasada"><span class="dia">07/11</span><span>popperazo pride</span></li>
+          <li><span class="dia">22/11</span><span>TBA</span></li>
           <li><span class="dia">31/12</span><span>4rtica año nuevo
             <a href="https://www.tikzet.com/events/4rtica" target="_blank" rel="noopener">tickets</a></span></li>
           <li><span class="dia">02/01</span><span>TBA</span></li>
