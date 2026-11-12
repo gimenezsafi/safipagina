@@ -144,17 +144,17 @@
     grid-row: 2;
     position: relative;
     overflow: hidden;
-    color: #ffffff;
+    color: var(--oscuro);   /* texto oscuro: sobre el velo claro el blanco no se lee */
     display: flex;
     align-items: center;
   }
-  /* velo del color oscuro de la paleta al 50%, por encima de la foto */
+  /* velo del color claro de la barra al 50%, por encima de la foto */
   .ficha::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: var(--oscuro);
+    background: var(--barra);
     opacity: .5;
   }
   .ficha img {
