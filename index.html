@@ -144,18 +144,19 @@
     grid-row: 2;
     position: relative;
     overflow: hidden;
-    color: var(--oscuro);   /* texto oscuro: sobre el velo claro el blanco no se lee */
+    color: #ffffff;
     display: flex;
     align-items: center;
   }
-  /* velo del color claro de la barra al 50%, por encima de la foto */
+  /* velo medio (claro con un poco de oscuro): lo más claro que mantiene legible el texto blanco */
   .ficha::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: var(--barra);
-    opacity: .5;
+    background: var(--claro);
+    background: color-mix(in srgb, var(--claro), var(--oscuro) 35%);
+    opacity: .8;
   }
   .ficha img {
     position: absolute;
@@ -165,7 +166,7 @@
     object-fit: cover;
     object-position: 97% center;
     transform: scaleX(-1);
-    filter: grayscale(1);   /* sin sus colores, la foto toma el tono del fondo */
+    filter: grayscale(1) brightness(.9);   /* sin sus colores, la foto toma el tono del fondo */
     opacity: .5;
   }
   .fechas {
