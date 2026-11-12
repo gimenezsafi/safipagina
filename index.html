@@ -148,6 +148,7 @@
     color: #ffffff;
     display: flex;
     align-items: center;
+    justify-content: center;   /* el bloque de texto queda centrado: mismo margen a cada lado */
   }
   /* velo semitransparente de la paleta: deja ver la cara y mantiene legible el texto blanco */
   .ficha::before {
@@ -174,7 +175,6 @@
   .fechas {
     position: relative;
     z-index: 2;
-    padding: 0 calc(1.4 * var(--u));
     line-height: 1.55;
     white-space: nowrap;
   }
@@ -183,8 +183,8 @@
 
   /* ---------- versión celular ---------- */
   @media (max-aspect-ratio: 1/1) {
-    :root { --u: min(1vw, 100vh / 159); }
-    @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 159); } }
+    :root { --u: min(1vw, 100vh / 150); }
+    @supports (height: 100dvh) { :root { --u: min(1vw, 100dvh / 150); } }
 
     body { font-size: calc(3.5 * var(--u)); }
     .pagina { padding: calc(6 * var(--u)) calc(4 * var(--u)); }
@@ -210,24 +210,23 @@
     .tabs { justify-content: space-between; gap: 0; margin-bottom: calc(1.5 * var(--u)); font-size: calc(3.3 * var(--u)); }
     .tags { margin-top: calc(1.5 * var(--u)); min-height: 2.5em; }
 
-    .ficha { margin-top: calc(4 * var(--u)); height: calc(36 * var(--u)); }
-    .ficha img { object-position: center 3%; transform: translateX(-10%) scale(-1.5, 1.5); transform-origin: 50% 45%; }
+    .ficha { margin-top: calc(4 * var(--u)); }
+    .ficha img { object-position: center 12%; transform: scaleX(-1); }
     /* fechas de a dos por renglón, en un recuadro bajo que ocupa todo el ancho */
     .fechas {
       width: 100%;
       height: 100%;
-      height: 100%;
       padding: calc(3.5 * var(--u)) calc(4 * var(--u));
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      gap: calc(1.5 * var(--u));
     }
     .fechas ul {
       margin: 0;
       display: grid;
       grid-template-columns: auto auto;
       justify-content: space-between;
-      row-gap: calc(6.3 * var(--u));
+      row-gap: calc(1.5 * var(--u));
     }
     .fechas li:nth-child(even) { text-align: right; }
   }
