@@ -312,16 +312,13 @@
 
   <div class="vistas">
   <main class="cuerpo" data-vista="about">
-    <!-- para cambiar un set: data-video = ID del video de YouTube, data-tags = etiquetas -->
+    <!-- data-tags = etiquetas de cada set. Para poner los sets reales, agregarle a cada botón data-video="ID de YouTube" -->
     <div class="tabs" role="tablist" aria-label="sets">
       <button role="tab" aria-selected="true"
-              data-video="yM5UJdaO4is"
               data-tags="techno, hard techno, house, trance, hardgroove"><span class="txt">electrónica</span> <span class="num"><b>1</b></span></button>
       <button role="tab" aria-selected="false"
-              data-video="hqbm9GaNcvA"
               data-tags="electropop, hyperpop, dance pop, house, remixes"><span class="txt">electrónica pop</span> <span class="num"><b>2</b></span></button>
       <button role="tab" aria-selected="false"
-              data-video="KCwOkeWh_wE"
               data-tags="pop, reguetón, electropop, pop nacional"><span class="txt">pop</span> <span class="num"><b>3</b></span></button>
     </div>
 
@@ -383,6 +380,53 @@
   for (var i = 0; i < tabs.length; i++) {
     tabs[i].onclick = function () { elegir(this); };
   }
+  /* videos de relleno: perros salchicha con entre 10 mil y 50 mil visitas.
+     En cada visita se sortean tres distintos, sin repetir los de la visita anterior. */
+  var relleno = [
+    'MG2Y86RK3yg', // Dachshund Has Bedtime Zoomies || ViralHog
+    's9KXYjo62tI', // Dachshund Zoomies || ViralHog
+    'lrkAC-XfIN4', // Sausage dogs unleashed in Running of the Wieners race
+    'oGmjV91Iufw', // ¡LA PRIMERA VEZ DEL MINI DACHSHUND EN LA NIEVE!
+    'LV--7YaYMbA', // Dachshund playing in deep snow! Funny!
+    'r4aFBH6nKWY', // Funny sausage dog video, cute dachshund, barking dachshund, 
+    'c5KyRmHDK50', // Cute funny dachshund puppy slide fail
+    'RKw-PjMtAuw', // Forrest caught stealing food
+    '67bvZXPl-ks', // Perro Salchicha Tiene Prisa Por Llevarse a Casa un Palo de Á
+    'C-bFeVaR-1k', // Carrera de perros salchichas en el show de medio tiempo en l
+    'm4cTuQ4JGLs', // Dachshund And Poodle Team Up Against Delivery Person || Vira
+    'WvyacUGL8hE', // Barking and Grumbling Dachshund
+    'MsntIIHpIAI', // Dachshund - swimming in life jacket
+    '4frlHhl1rtQ', // Never Wake a Sleeping Dachshund… | Teddy the Dachshund 🐾
+    'MROT6vu9D14', // Turbo Toby's First Snow Day!!! (Miniature Dachshund)
+    'Pew-Jqlnu_E', // ¡Divertido perro salchicha miniatura no para de lanzarse a l
+    'EDmhPLa8gCw', // Confused talking dachshund Arvid!
+    'pHxk70B2nMA', // Dachshund Barking Wiener Dog Security Patrol Services
+    'B7y05K_tjd0', // Perros salchichas ladrando
+    'woWa8h2nXGk', // PUPPY POOL PARTY: Mini DACHSHUNDS Love Swimming
+    '80fFcT6NcgM', // Labrador vs. Dachshund Fight Over Bone
+    'mNg0Mdq8_Ic', // What things make a mini dachshund bark?
+    'iNI8avA3dqo', // Swimming Dachshunds - Compilation.
+    '0e3DD22RFCM', // guacamaya peleando con perro salchicha
+    'goIMLlHfELE', // Salchicha aullando...
+    'lfLupWMOUCQ', // Snow fun with our Dachshunds.
+    '4KDSeQ2GYSU', // Dachshunds try to steal duck food.
+    'lm6vPkcGSBE', // Give me attention!! With Barkley the wire haired dachshund
+    'XOAEdJ9YYzU', // 40 minutes Funniest Miniature Dachshund Dogs Cute Instagram 
+  ];
+  (function () {
+    var usados = [], libres = [], i;
+    try { usados = (localStorage.getItem('videos') || '').split(','); } catch (e) {}
+    for (i = 0; i < relleno.length; i++) if (usados.indexOf(relleno[i]) < 0) libres.push(relleno[i]);
+    var elegidos = [];
+    for (i = 0; i < tabs.length; i++) {
+      if (tabs[i].getAttribute('data-video')) continue;   // set real ya cargado
+      var v = libres.splice(Math.floor(Math.random() * libres.length), 1)[0];
+      tabs[i].setAttribute('data-video', v);
+      elegidos.push(v);
+    }
+    try { localStorage.setItem('videos', elegidos.join(',')); } catch (e) {}
+  })();
+
   actual = tabs[Math.floor(Math.random() * tabs.length)];   // un set al azar cada vez que entrás
 
   /* about / rider: se muestra una vista u otra según el link del menú (#about o #rider) */
