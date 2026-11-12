@@ -113,6 +113,7 @@
     cursor: pointer;
   }
   .tabs button[aria-selected="true"] { color: var(--oscuro); }
+  .tabs button:hover .txt { text-decoration: underline; }
   .tabs .num {
     display: flex;
     align-items: center;
@@ -282,13 +283,13 @@
     <div class="tabs" role="tablist" aria-label="sets">
       <button role="tab" aria-selected="true"
               data-video="p5u6rpDPImM"
-              data-tags="techno, hard techno, house, trance, hardgroove">electrónica <span class="num"><b>1</b></span></button>
+              data-tags="techno, hard techno, house, trance, hardgroove"><span class="txt">electrónica</span> <span class="num"><b>1</b></span></button>
       <button role="tab" aria-selected="false"
               data-video="v2Yix5gc89k"
-              data-tags="electropop, hyperpop, dance pop, house, remixes">electrónica pop <span class="num"><b>2</b></span></button>
+              data-tags="electropop, hyperpop, dance pop, house, remixes"><span class="txt">electrónica pop</span> <span class="num"><b>2</b></span></button>
       <button role="tab" aria-selected="false"
               data-video="sQHq2Ykv404"
-              data-tags="pop, reguetón, electropop, pop nacional">pop <span class="num"><b>3</b></span></button>
+              data-tags="pop, reguetón, electropop, pop nacional"><span class="txt">pop</span> <span class="num"><b>3</b></span></button>
     </div>
 
     <div class="video">
@@ -332,7 +333,7 @@
   for (var i = 0; i < tabs.length; i++) {
     tabs[i].onclick = function () { elegir(this); };
   }
-  elegir(tabs[0]);
+  elegir(tabs[Math.floor(Math.random() * tabs.length)]);   // un set al azar cada vez que entrás
 </script>
 </body>
 </html>
