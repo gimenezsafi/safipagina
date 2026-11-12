@@ -181,6 +181,30 @@
   .fechas ul { list-style: none; margin-bottom: 1.55em; }
   .fechas .pasada { text-decoration: line-through; }
 
+  /* ---------- vistas: about y rider ocupan el mismo lugar ---------- */
+  .vistas { display: grid; }
+  .vistas > * { grid-area: 1 / 1; min-width: 0; }
+  .vistas > .oculta { visibility: hidden; }
+
+  .rider { display: flex; flex-direction: column; }
+  .rider h2 {
+    font: inherit;
+    text-transform: uppercase;
+    margin-bottom: calc(0.9 * var(--u));
+  }
+  .rider dl {
+    flex: 1;
+    background: var(--barra);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-content: center;
+    gap: calc(3 * var(--u)) calc(5 * var(--u));
+    padding: calc(4 * var(--u)) calc(5 * var(--u));
+    font-size: 1.4em;
+  }
+  .rider dt { color: var(--claro); }
+  .rider p { margin-top: calc(0.5 * var(--u)); }
+
   /* ---------- versión celular ---------- */
   @media (max-aspect-ratio: 1/1) {
     :root { --u: min(1vw, 100vh / 146); }
@@ -206,6 +230,15 @@
     }
 
     .cuerpo { display: block; }
+    .rider h2 { font-size: calc(3.3 * var(--u)); margin-bottom: calc(1.5 * var(--u)); }
+    .rider dl {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: calc(4 * var(--u));
+      font-size: 1.25em;
+    }
+    .rider dd + dt { margin-top: calc(6 * var(--u)); }
+    .rider p { margin-top: calc(1.5 * var(--u)); }
     .tabs { margin-bottom: calc(1.5 * var(--u)); font-size: calc(3.3 * var(--u)); }
     .tags { margin-top: calc(1.5 * var(--u)); }
 
@@ -263,10 +296,10 @@
 
     <div class="lado">
       <nav class="nav">
-        <!-- reemplazar por los links personales -->
-        <a href="#" aria-current="page">about</a>
-        <a href="#" target="_blank" rel="noopener">rider</a>
-        <a href="#" target="_blank" rel="noopener">presskit</a>
+        <!-- about y rider cambian la vista de abajo; presskit todavía no tiene destino -->
+        <a href="#about" data-ir="about" aria-current="page">about</a>
+        <a href="#rider" data-ir="rider">rider</a>
+        <a href="#about">presskit</a>
         <a href="https://www.instagram.com/safi.ags/" target="_blank" rel="noopener">instagram</a>
         <a href="https://soundcloud.com/safi_ags" target="_blank" rel="noopener">soundcloud</a>
       </nav>
@@ -276,7 +309,8 @@
     </div>
   </header>
 
-  <main class="cuerpo">
+  <div class="vistas">
+  <main class="cuerpo" data-vista="about">
     <!-- para cambiar un set: data-video = ID del video de YouTube, data-tags = etiquetas -->
     <div class="tabs" role="tablist" aria-label="sets">
       <button role="tab" aria-selected="true"
@@ -313,6 +347,20 @@
     </aside>
   </main>
 
+  <section class="rider oculta" data-vista="rider">
+    <h2>rider técnico</h2>
+    <dl>
+      <dt>decks</dt>
+      <dd>CDJ pioneer (2000nxs en adelante)</dd>
+      <dt>mixer</dt>
+      <dd>equipos pioneer y xone</dd>
+      <dt>all in one y controladoras</dt>
+      <dd>equipos pioneer</dd>
+    </dl>
+    <p>consultas técnicas y bookings: <a href="mailto:hola@safi.ar">hola@safi.ar</a></p>
+  </section>
+  </div>
+
 </div>
 
 <script>
@@ -320,7 +368,10 @@
   var video = document.getElementById('video');
   var tags = document.getElementById('tags');
 
+  var actual;
+
   function elegir(tab) {
+    actual = tab;
     for (var i = 0; i < tabs.length; i++) {
       tabs[i].setAttribute('aria-selected', tabs[i] === tab ? 'true' : 'false');
     }
@@ -331,7 +382,27 @@
   for (var i = 0; i < tabs.length; i++) {
     tabs[i].onclick = function () { elegir(this); };
   }
-  elegir(tabs[Math.floor(Math.random() * tabs.length)]);   // un set al azar cada vez que entrás
+  actual = tabs[Math.floor(Math.random() * tabs.length)];   // un set al azar cada vez que entrás
+
+  /* about / rider: se muestra una vista u otra según el link del menú (#about o #rider) */
+  var vistas = document.querySelectorAll('[data-vista]');
+  var links = document.querySelectorAll('[data-ir]');
+
+  function mostrar() {
+    var nombre = location.hash === '#rider' ? 'rider' : 'about';
+    for (var i = 0; i < vistas.length; i++) {
+      vistas[i].classList.toggle('oculta', vistas[i].getAttribute('data-vista') !== nombre);
+    }
+    for (var j = 0; j < links.length; j++) {
+      if (links[j].getAttribute('data-ir') === nombre) links[j].setAttribute('aria-current', 'page');
+      else links[j].removeAttribute('aria-current');
+    }
+    if (nombre === 'about') elegir(actual);
+    else video.src = 'about:blank';   // corta el video al salir de about
+  }
+
+  window.onhashchange = mostrar;
+  mostrar();
 </script>
 </body>
 </html>
