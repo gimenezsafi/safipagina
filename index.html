@@ -214,31 +214,28 @@
     margin-bottom: calc(0.9 * var(--u));
   }
 
-  /* ---------- cabinas: video a la izquierda, ficha clara con líneas a la derecha ---------- */
-  .cab {
-    display: grid;
-    grid-template-columns: 539fr 310fr;
-    column-gap: calc(3.1 * var(--u));
+  /* ---------- cabinas: dos filas finas, video a la izquierda y ficha clara con líneas a la derecha ---------- */
+  .cab { display: flex; flex-direction: column; justify-content: space-between; }
+  .cab-fila {
+    display: flex;
+    gap: calc(3.1 * var(--u));
+    height: calc(15.8 * var(--u));
   }
-  .cab-tabs { justify-content: flex-start; gap: calc(4 * var(--u)); }
-  .cab-caja {
-    grid-column: 2;
-    grid-row: 2;
-    display: grid;
-    height: 0;
-    min-height: 100%;
-    overflow: hidden;
+  .cab-fila .video { flex: none; height: 100%; }   /* 16:9: el ancho sale del alto */
+  .cab-ficha {
+    flex: 1;
+    min-width: 0;
     background: var(--barra);
-    padding: calc(2 * var(--u));
+    padding: 0 calc(2 * var(--u));
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-content: center;
   }
-  .cab-ficha { grid-area: 1 / 1; display: flex; flex-direction: column; justify-content: space-between; }
-  .cab-ficha.oculta { visibility: hidden; }
-  .cab-t { text-transform: uppercase; }
-  .cab-ficha dl { display: grid; grid-template-columns: auto 1fr; }
-  .cab-ficha dt, .cab-ficha dd { padding: .4em 0; border-top: var(--linea) solid var(--oscuro); }
+  .cab-ficha dt, .cab-ficha dd { padding: .45em 0; border-top: var(--linea) solid var(--oscuro); }
+  .cab-ficha dt:first-of-type, .cab-ficha dt:first-of-type + dd { border-top: 0; }
   .cab-ficha dt { color: var(--claro); padding-right: calc(1.5 * var(--u)); }
   .cab-ficha dd { text-align: right; }
-  .cab-pie { grid-column: 1 / -1; text-align: right; margin-top: calc(0.5 * var(--u)); }
+  .cab-pie { text-align: right; }
 
   /* ---------- presskit: revista + galería a la izquierda, texto a la derecha ---------- */
   .kit-cuerpo {
@@ -410,11 +407,12 @@
 
     .cuerpo { display: block; }
     .kit h2 { font-size: calc(3.3 * var(--u)); margin-bottom: calc(1.5 * var(--u)); }
-    .cab { display: block; }
-    .cab-tabs { justify-content: space-between; gap: 0; }
-    .cab-caja { height: auto; min-height: 0; margin-top: calc(5 * var(--u)); padding: calc(3 * var(--u)) calc(4 * var(--u)); }
-    .cab-ficha { gap: calc(2.5 * var(--u)); }
-    .cab-pie { margin-top: calc(1.5 * var(--u)); }
+    .cab { justify-content: flex-start; gap: calc(4 * var(--u)); }
+    .cab-fila { height: auto; gap: calc(3 * var(--u)); }
+    .cab-fila .video { width: 46%; height: auto; }
+    .cab-ficha { padding: 0 calc(3 * var(--u)); font-size: calc(3 * var(--u)); }
+    .cab-ficha dt, .cab-ficha dd { padding: .3em 0; }
+
     .kit-cuerpo { grid-template-columns: 1fr; }
     .visor { aspect-ratio: 2 / 1; }
     .kit-pie { order: 2; margin-top: calc(1.5 * var(--u)); }
@@ -544,38 +542,35 @@
 
   <section class="cab oculta" data-vista="cabinas">
     <!-- cada cabina: data-video = ID de YouTube, data-inicio = segundo en el que arranca -->
-    <div class="tabs cab-tabs" role="tablist" aria-label="cabinas">
-      <button role="tab" aria-selected="true" data-cab="0" data-video="-9DagC7FU0c" data-inicio="2521"><span class="txt">cabina archivo secreto</span></button>
-      <button role="tab" aria-selected="false" data-cab="1" data-video="ZQkhUxQ2IUo" data-inicio="2329"><span class="txt">cabina tekgen</span></button>
-    </div>
-    <div class="video">
-      <iframe id="video-cab" title="cabina" allowfullscreen
-              referrerpolicy="strict-origin-when-cross-origin"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-    </div>
-    <div class="cab-caja">
-      <div class="cab-ficha" data-cab="0">
-        <p class="cab-t">cabina archivo secreto</p>
-        <dl>
-          <dt>grabado</dt>
-          <dd>en septiembre de 2025</dd>
-          <dt>géneros</dt>
-          <dd>techno, hard techno, hardgroove</dd>
-          <dt>video</dt>
-          <dd><a href="https://www.youtube.com/watch?v=-9DagC7FU0c&t=2521s" target="_blank" rel="noopener">ver en youtube</a></dd>
-        </dl>
+    <div class="cab-fila">
+      <div class="video">
+        <iframe class="video-cab" data-video="ZQkhUxQ2IUo" data-inicio="2329" title="cabina tekgen" allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
-      <div class="cab-ficha oculta" data-cab="1">
-        <p class="cab-t">cabina tekgen</p>
-        <dl>
-          <dt>grabado</dt>
-          <dd>en agosto de 2025</dd>
-          <dt>géneros</dt>
-          <dd>trance, techno, acid, EBM</dd>
-          <dt>video</dt>
-          <dd><a href="https://www.youtube.com/watch?v=ZQkhUxQ2IUo&t=2329s" target="_blank" rel="noopener">ver en youtube</a></dd>
-        </dl>
+      <dl class="cab-ficha">
+        <dt>cabina</dt>
+        <dd>tekgen</dd>
+        <dt>grabado</dt>
+        <dd>agosto 2025</dd>
+        <dt>géneros</dt>
+        <dd>trance, techno, acid, EBM</dd>
+      </dl>
+    </div>
+    <div class="cab-fila">
+      <div class="video">
+        <iframe class="video-cab" data-video="-9DagC7FU0c" data-inicio="2521" title="cabina archivo secreto" allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
+      <dl class="cab-ficha">
+        <dt>cabina</dt>
+        <dd>archivo secreto</dd>
+        <dt>grabado</dt>
+        <dd>septiembre 2025</dd>
+        <dt>géneros</dt>
+        <dd>techno, hard techno, hardgroove</dd>
+      </dl>
     </div>
     <p class="cab-pie">bookings: <a href="mailto:hola@safi.ar">hola@safi.ar</a></p>
   </section>
@@ -745,18 +740,15 @@
   hojas[0].onclick = function () { pasar(estado === 0 ? 1 : 0); };   // tocar la hoja también la da vuelta
   hojas[1].onclick = function () { pasar(estado === 2 ? 1 : 2); };
 
-  /* ---- cabinas ---- */
-  var cabTabs = document.querySelectorAll('.cab-tabs button');
-  var cabFichas = document.querySelectorAll('.cab-ficha');
-  var videoCab = document.getElementById('video-cab');
-  var cabActual = cabTabs[0];
-  function cabina(tab) {
-    cabActual = tab;
-    for (var i = 0; i < cabTabs.length; i++) cabTabs[i].setAttribute('aria-selected', cabTabs[i] === tab ? 'true' : 'false');
-    for (var j = 0; j < cabFichas.length; j++) cabFichas[j].classList.toggle('oculta', cabFichas[j].getAttribute('data-cab') !== tab.getAttribute('data-cab'));
-    videoCab.src = 'https://www.youtube.com/embed/' + tab.getAttribute('data-video') + '?start=' + tab.getAttribute('data-inicio');
+  /* ---- cabinas: los dos videos se cargan al entrar a la vista y se cortan al salir ---- */
+  var videosCab = document.querySelectorAll('.video-cab');
+  function cabinas(ver) {
+    for (var i = 0; i < videosCab.length; i++) {
+      var v = videosCab[i];
+      var url = ver ? 'https://www.youtube.com/embed/' + v.getAttribute('data-video') + '?start=' + v.getAttribute('data-inicio') : 'about:blank';
+      if (v.getAttribute('src') !== url) v.src = url;
+    }
   }
-  for (var c = 0; c < cabTabs.length; c++) cabTabs[c].onclick = function () { cabina(this); };
 
   /* subpáginas del recuadro derecho: about / rider */
   var subs = document.querySelectorAll('.subs button');
@@ -799,7 +791,7 @@
     }
     // solo suena el video de la vista que se está viendo
     if (nombre === 'about') elegir(actual); else video.src = 'about:blank';
-    if (nombre === 'cabinas') cabina(cabActual); else videoCab.src = 'about:blank';
+    cabinas(nombre === 'cabinas');
   }
 
   window.onhashchange = mostrar;
