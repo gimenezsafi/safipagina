@@ -151,7 +151,9 @@
   .aviso {
     grid-column: 2;
     grid-row: 3;
-    justify-self: end;
+    min-width: 0;                 /* no ensancha la columna: si no entra, sobresale hacia la izquierda */
+    display: flex;
+    justify-content: flex-end;
     margin-top: calc(0.5 * var(--u));
     white-space: nowrap;
     opacity: 0;
