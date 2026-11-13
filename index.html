@@ -147,6 +147,24 @@
     min-height: 1.25em;   /* reserva el renglón aunque todavía no haya set elegido */
   }
 
+  /* aviso debajo del recuadro de la foto: aparece a los 5 s, se queda 2 s, se va, y vuelve al minuto */
+  .aviso {
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: end;
+    margin-top: calc(0.5 * var(--u));
+    white-space: nowrap;
+    opacity: 0;
+    animation: aviso 64s 5s infinite;
+  }
+  @keyframes aviso {
+    0%      { opacity: 0; }
+    1.5625% { opacity: 1; }   /* 1 s de fundido de entrada */
+    4.6875% { opacity: 1; }   /* 2 s visible */
+    6.25%   { opacity: 0; }   /* 1 s de fundido de salida */
+    100%    { opacity: 0; }   /* 60 s de espera */
+  }
+
   /* foto espejada, en gris y semitransparente sobre el fondo: se tiñe con la paleta */
   .ficha {
     grid-column: 2;
@@ -431,6 +449,7 @@
     .tags { margin-top: calc(1.5 * var(--u)); }
 
     .ficha { margin-top: calc(5 * var(--u)); }
+    .aviso { margin-top: calc(1.5 * var(--u)); text-align: right; }
     .ficha img { object-position: center 12%; transform: scaleX(-1); }
     /* fechas de a dos por renglón, en un recuadro bajo que ocupa todo el ancho */
     .fechas {
@@ -536,6 +555,8 @@
         <p class="booking"><span class="dia">bookings</span><a href="mailto:hola@safi.ar">hola@safi.ar</a></p>
       </div>
     </aside>
+
+    <p class="aviso">si actualizás la página cambia de color!</p>
   </main>
 
   <section class="cab oculta" data-vista="cabinas">
